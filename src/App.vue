@@ -1,28 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <connexion v-if="window.location.pathname === '/'"/>
+    <listSalon v-if="window.location.pathname === '/salons'"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Connexion from './components/Connexion.vue'
+import ListSalon from './components/ListSalon.vue'
+    
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Connexion,
+    ListSalon
+  },
+  data: function() {
+      return {
+          window: window
+      }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scope>
+
 </style>

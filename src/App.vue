@@ -1,14 +1,24 @@
 <template>
-    <home/>
+  <div id="app">
+    <home v-if="window.location.pathname === '/'"/>
+    <salons v-if="window.location.pathname === '/salons'"/>
+  </div>
 </template>
 
 <script>
 import home from './components/home.vue'
-
+import salons from './components/salons.vue'
+    
 export default {
   name: 'app',
   components: {
-    home
+    home,
+    salons
+  },
+  data: function() {
+      return {
+          window: window
+      }
   }
 }
 </script>

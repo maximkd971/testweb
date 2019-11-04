@@ -94,8 +94,8 @@ var app = new Vue({
     	})
 
     	socket.on('trouve_mot', function (data){
-    		tour = data [0];
-    		word2Find = data [1];
+    		app.tour = data [0];
+    		app.word2Find = data [1];
     	})
     	socket.on('boom' , function(data){
     		app.liste_joueur.push(data[0]);

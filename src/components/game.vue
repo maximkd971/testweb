@@ -1,7 +1,15 @@
-<template>
+<template >
     <div>
-        <div style="text-align:center ; float:left ; height:100vh ; width:10%;">
-            Nous soutenir !
+        <div style="margin:auto; text-align:center ; float:left ;  height:100vh; width:9%;">
+            <div > Nous soutenir !</div>
+            <div style="margin-top:125%">
+            
+                <img src=../assets/fb.png width="35%" height="12%">
+                <br>
+                <img src=../assets/ins.jpg width="45%" height="20%" >
+                <br>
+                <img src=../assets/twi.png width="30%" height="18%" >
+            </div>
         </div>
 
         <div style="margin:auto ; text-align:center ; height:100vh ; width:70%">
@@ -27,5 +35,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

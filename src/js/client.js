@@ -7,11 +7,13 @@ var app = new Vue({
     	word: '',
     	roomName : '',
     	token : '',
+    	debut_jeu : '',
     	emptyPseudo : false,
     	emptyWord : false,
     	emptyRoom : false,
     	entrer_mot : [],
     	nouveau_salon : [],
+    	liste_salon : [],
     },
 
     methods :{
@@ -38,11 +40,9 @@ var app = new Vue({
     	sendMessage : function(){
     		if (this.word != ''){
     			this.emptyWord = false;
-    			this.pseudo = sessionStorage.getItem();
-    			this.entrer_mot.push(pseudo);
+    			this.entrer_mot.push(token);
     			this.entrer_mot.push(word);
 	    		socket.emit('entrer_mot', this.entrer_mot);
-	    		this.pseudo = '';
 	    		this.entrer_mot = [];
 	    		this.word = '';
     		}else{
@@ -66,6 +66,11 @@ var app = new Vue({
     		else{
     			this.emptyRoom = true;
     		}
+    	},
+
+    	startGame : function(){
+    		this.debut_jeu = token.split('_')[1];
+    		socket.emit('debut_jeu', this.debut_jeu);
     	}
     },
 
@@ -75,7 +80,7 @@ var app = new Vue({
 
 
     mounted : function(){
-
+    	
 
     },
 

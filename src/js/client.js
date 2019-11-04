@@ -5,9 +5,13 @@ var app = new Vue({
     data :{
     	pseudo: '',
     	word: '',
+    	roomName : '',
+    	token : '',
     	emptyPseudo : false,
     	emptyWord : false,
-    	message : [],
+    	emptyRoom : false,
+    	entrer_mot : [],
+    	nouveau_salon : [],
     },
 
     methods :{
@@ -35,16 +39,34 @@ var app = new Vue({
     		if (this.word != ''){
     			this.emptyWord = false;
     			this.pseudo = sessionStorage.getItem();
-    			this.message.push(pseudo);
-    			this.message.push(word);
-	    		socket.emit('message', this.word);
+    			this.entrer_mot.push(pseudo);
+    			this.entrer_mot.push(word);
+	    		socket.emit('entrer_mot', this.entrer_mot);
 	    		this.pseudo = '';
-	    		this.message = [];
+	    		this.entrer_mot = [];
 	    		this.word = '';
     		}else{
     			this.emptyWord = true;
+    			
+
     		}
     	},
+
+    	newRoom : function(){
+    		if (this.roomName != ''){
+    			this.emptyRoom = false;
+    			this.pseudo = sessionStorage.getItem();
+    			this.nouveau_salon.push(pseudo);
+    			this.nouveau_salon.push(roomName);
+    			socket.emit('entrer_mot', this.entrer_mot);
+    			this.pseudo = '';
+	    		this.nouveau_salon = [];
+	    		this.roomName = '';
+    		}
+    		else{
+    			this.emptyRoom = true;
+    		}
+    	}
     },
 
     created : function(){

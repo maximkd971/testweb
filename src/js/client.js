@@ -80,7 +80,9 @@ var app = new Vue({
 
 
     mounted : function(){
-    	
+    	socket.on('liste_salon', function(data){
+    		app.liste_salon.push(data)
+    	}),
 
     },
 

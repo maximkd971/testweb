@@ -2,7 +2,7 @@
     <div id="content">
 
         <div style="margin:auto; text-align:center ; float:left ;  height:100vh; width:9%; border-right-style: dashed ; border-color: gray;">
-            <div> Nous soutenir !</div>
+            <div> <h2> Nous soutenir !</h2> </div>
             <div style="margin-top:125% ; ">
                 <img src=../assets/fb.png width="35%" height="12%">
                 <br>
@@ -24,7 +24,7 @@
         </div>
 
         <div style="position:absolute ; top:0 ; right:0 ; text-align:center ; float:right ; height:100vh ; width:10% ; border-left-style: dashed ; border-color: gray">
-            Amis 
+            <h2>Amis</h2> 
         </div>
     </div>
 </template>

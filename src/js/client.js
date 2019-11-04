@@ -14,6 +14,7 @@ var app = new Vue({
     	entrer_mot : [],
     	nouveau_salon : [],
     	liste_salon : [],
+    	liste_joueur : [],
     },
 
     methods :{
@@ -81,8 +82,13 @@ var app = new Vue({
 
     mounted : function(){
     	socket.on('liste_salon', function(data){
-    		app.liste_salon.push(data)
+    		app.liste_salon.push(data);
     	}),
+
+    	socket.on('liste_joueur', function (data){
+    		app.liste_joueur.push(data[0]);
+    		app.token = data[1];
+    	})
 
     },
 

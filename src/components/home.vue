@@ -1,8 +1,8 @@
 <template>
-  <div id="content" class="bg-contact2" style="background-image: url('images/bg-01.jpg');">
+  <div id="content" class="bg-contact2" style="background-image: url('https://crennjulie.files.wordpress.com/2014/06/fond-gris-degrade-642552.jpg');">
 		<div class="container-contact2">
 			<div class="wrap-contact2">
-				<form class="contact2-form validate-form" action="/game" method="POST">
+				<form class="contact2-form validate-form" @submit.prevent='session'>
 					<span class="contact2-form-title">
 						Connexion
 					</span>
@@ -12,10 +12,13 @@
 						<span class="focus-input2" data-placeholder="NAME"></span>
 					</div>
 
-					<div class="wrap-input2 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+          <p v-if ='emptyPseudo' style="color:red;">Vous devez rentrer un pseudo</p>
+
+
+					<!-- <div class="wrap-input2 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 						<input class="input2" type="password" name="password">
 						<span class="focus-input2" data-placeholder="PASSWORD"></span>
-					</div>
+					</div> -->
 
 					<div class="container-contact2-form-btn">
 						<div class="wrap-contact2-form-btn">
@@ -173,11 +176,10 @@ iframe {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background: rgba(219,21,99,0.8);
-  background: -webkit-linear-gradient(45deg, rgba(213,0,125,0.8), rgba(229,57,53,0.8));
-  background: -o-linear-gradient(45deg, rgba(213,0,125,0.8), rgba(229,57,53,0.8));
-  background: -moz-linear-gradient(45deg, rgba(213,0,125,0.8), rgba(229,57,53,0.8));
-  background: linear-gradient(45deg, rgba(213,0,125,0.8), rgba(229,57,53,0.8));
+  background: rgba(59, 59, 59, 0.8);
+  background: -webkit-linear-gradient(45deg, rgba(58, 57, 57, 0.8), rgba(95, 92, 92, 0.8));
+  background: -o-linear-gradient(45deg, rgba(53, 52, 53, 0.8), rgba(128, 125, 125, 0.8));
+  background: -moz-linear-gradient(45deg, rgba(51, 50, 51, 0.8)rgba(122, 119, 118, 0.8)8));
 }
 
 .wrap-contact2 {
@@ -252,11 +254,11 @@ iframe {
   -moz-transition: all 0.4s;
   transition: all 0.4s;
 
-  background: rgba(219,21,99,1);
-  background: -webkit-linear-gradient(45deg, #d5007d, #e53935);
-  background: -o-linear-gradient(45deg, #d5007d, #e53935);
-  background: -moz-linear-gradient(45deg, #d5007d, #e53935);
-  background: linear-gradient(45deg, #d5007d, #e53935);
+  background: gray;
+  background: -webkit-linear-gradient(45deg, gray, gray);
+  background: -o-linear-gradient(45deg, gray, gray);
+  background: -moz-linear-gradient(45deg, gray, gray);
+  background: linear-gradient(45deg, gray, gray);
 }
 
 .focus-input2::after {
@@ -343,9 +345,9 @@ textarea.input2 + .focus-input2::after {
   z-index: -1;
   width: 300%;
   height: 100%;
-  background: rgba(219,21,99,1);
-  background: -webkit-linear-gradient(-135deg, #d5007d, #e53935, #d5007d, #e53935);
-  background: -o-linear-gradient(-135deg, #d5007d, #e53935, #d5007d, #e53935);
+  background: rgb(99, 86, 91);
+  background: -webkit-linear-gradient(-135deg, #55464f, #9e8e8e, #bdb5b9, #f1ebeb);
+  background: -o-linear-gradient(-135deg, #222122, #e53935, #d5007d, #e53935);
   background: -moz-linear-gradient(-135deg, #d5007d, #e53935, #d5007d, #e53935);
   background: linear-gradient(-135deg, #d5007d, #e53935, #d5007d, #e53935);
   top: 0;

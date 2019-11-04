@@ -11,7 +11,7 @@ var app = new Vue({
     	//Connexion de l'utilisateur
     	//Envoyer juste le pseudo au serveur et stocker dans une variable de session
     	session : function(){
-    		if (this.word != ''){
+    		if (this.pseudo != ''){
     			this.emptyWord = false;
 	    		if (sessionStorage.getItem("autosave")) {
 				  // Restauration du contenu du champ

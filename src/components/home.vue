@@ -1,37 +1,56 @@
 <template>
-  <div id="content" class="bg-contact2" style="background-image: url('https://crennjulie.files.wordpress.com/2014/06/fond-gris-degrade-642552.jpg');">
-		<div class="container-contact2">
-			<div class="wrap-contact2">
-				<form class="contact2-form validate-form" @submit.prevent='session'>
-					<span class="contact2-form-title">
-						Connexion
-					</span>
+  <div id="app">
+  <v-app id="inspire">
+    <v-content>
+      <v-container
+        fluid
+        fill-height
+      >
+        <v-layout
+          align-center
+          justify-center
+        >
+          <v-flex
+            xs12
+            sm8
+            md4
+          >
+            <v-card class="elevation-12">
+              <v-toolbar
+                color="primary"
+                dark
+                flat
+              >
+                <v-toolbar-title>MaxienBomFlo</v-toolbar-title>
+                <v-spacer></v-spacer>
+              </v-toolbar>
+              <v-card-text>
+                <v-form>
+                  <v-text-field
+                    label="Login"
+                    name="login"
+                    type="text"
+                  ></v-text-field>
 
-					<div class="wrap-input2 validate-input" data-validate="Name is required">
-						<input class="input2" type="text" name="name">
-						<span class="focus-input2" data-placeholder="NAME"></span>
-					</div>
-
-          <p v-if ='emptyPseudo' style="color:red;">Vous devez rentrer un pseudo</p>
-
-
-					<!-- <div class="wrap-input2 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input2" type="password" name="password">
-						<span class="focus-input2" data-placeholder="PASSWORD"></span>
-					</div> -->
-
-					<div class="container-contact2-form-btn">
-						<div class="wrap-contact2-form-btn">
-							<div class="contact2-form-bgbtn"></div>
-							<button class="contact2-form-btn" type="submit">
-								Connexion
-							</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                  <v-text-field
+                    id="password"
+                    label="Password"
+                    name="password"
+                    type="password"
+                  ></v-text-field>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary">Connexion</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
+</div>
 </template>
 
 <script>

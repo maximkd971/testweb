@@ -13,24 +13,34 @@
         </div>
 
         <div style="margin:auto ; text-align:center ; height:100vh ; width:80%">
-            <div id="image_bombe">
+            <div id="image_bombe" style="margin: auto ; height:40% ; width: 50% ;">
                 <v-img src="../assets/image_bombe.png" aspect-ratio="2" contain height="200" width="500"></v-img>
             </div>
 
-            <div id="liste_salons" style="display: none ; margin: auto ; height:40% ; width: 50% ; border-style: solid ; border-color: gray ; overflow:auto;">
+            <div id="liste_salons" style="margin: auto ; height:40% ; width: 50% ; border-style: solid ; border-color: gray ; overflow:auto;">
+                <ul>
+                    <li>test 1</li>
+                    <li>test 1</li>
+                    <li>test 1</li>
+                    <li>test 1</li>
+                    <li>test 1</li>
+                    <li>test 1</li>
+                    <li>test 1</li>
+                    <li>test 1</li>
+                    <li>test 1</li>
+                    <li>test 1</li>
+                    <li>test 1</li>
+                    <li>test 1</li>
+                </ul>
             </div>
-
-            <v-btn x-small v-on:click="creation_salon" id="bouton_create" rounded width="22%" height="15%" color="#CDC5C4">Créer un salon</v-btn>
             
-            <div id="nom_salon" style="width: 30% ; margin:auto ; text-align:center ; display: none ; ">
+            <div id="nom_salon" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
                 <v-text-field label="Nom du salon"></v-text-field>
             </div>
 
-            <div id="bouton_lancement_salon" style="display: none ; text-align:center ; display: none ;">
-                <v-btn x-small v-on:click="lancement_salon" rounded width="22%" height="55" color="#CDC5C4">Lancer un salon</v-btn>
+            <div id="bouton_lancement_salon" style=" text-align:center ;">
+                <p><v-btn x-small v-on:click="lancement_salon" rounded width="22%" height="55" color="#CDC5C4">Lancer un salon</v-btn></p>
             </div>
-
-            <v-btn x-small v-on:click="affichage_salons" id="bouton_join" rounded width="22%" height="15%" color="#CDC5C4">Rejoindre un salon</v-btn>
         
         </div>
 
@@ -38,6 +48,34 @@
             <h2>Amis</h2> 
             <div>
                 <div id="liste_amis" style="margin: auto ; max-height:60vh ; width: 100% ; border-style: solid ; border-color: gray ; overflow:auto; border-left-style: none ;">
+                    <ul>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        <li>AMI 1</li>
+                        
+                    </ul>
                 </div>
 
                 <v-text-field id="nom_ami" label="Nom de l'ami"></v-text-field>
@@ -56,18 +94,6 @@ export default {
     msg: String
   },
   methods:{
-      creation_salon(){
-          document.getElementById("bouton_create").style.display="none"
-          document.getElementById("nom_salon").style.display="block"
-          document.getElementById("bouton_lancement_salon").style.display="block"
-      },
-      affichage_salons(){
-          //document.getElementById("bouton_create").style.display="none"
-          document.getElementById("bouton_join").style.display="none"
-          document.getElementById("nom_salon").style.display="none"
-          document.getElementById("bouton_lancement_salon").style.display="none"
-          document.getElementById("liste_salons").style.display="block"
-      },
       lancement_salon(){
           console.log("lancement salon")
       },

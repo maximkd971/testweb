@@ -74,7 +74,6 @@
                         <li>AMI 1</li>
                         <li>AMI 1</li>
                         <li>AMI 1</li>
-                        
                     </ul>
                 </div>
 

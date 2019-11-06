@@ -17,21 +17,29 @@
                 <v-img src="../assets/image_bombe.png" aspect-ratio="2" contain height="200" width="500"></v-img>
             </div>
 
-            <div id="liste_salons" style="margin: auto ; height:40% ; width: 50% ; border-style: solid ; border-color: gray ; overflow:auto;">
-                <ul>
-                    <li>test 1</li>
-                    <li>test 1</li>
-                    <li>test 1</li>
-                    <li>test 1</li>
-                    <li>test 1</li>
-                    <li>test 1</li>
-                    <li>test 1</li>
-                    <li>test 1</li>
-                    <li>test 1</li>
-                    <li>test 1</li>
-                    <li>test 1</li>
-                    <li>test 1</li>
-                </ul>
+            <div style="margin: auto ; height:40% ; width: 50% ; border-style: solid ; border-color: gray ; overflow:auto;">
+                <v-card id="liste_salons"
+                    class="mx-auto"
+                    max-width="100%"
+                    tile
+                >
+                    <v-list rounded>
+                        <v-subheader>Liste des salons</v-subheader>
+                        <v-list-item-group v-model="item" color="primary">
+                            <v-list-item
+                                v-for="(item, i) in items"
+                                :key="i"
+                            >
+                            <v-list-item-icon>
+                                <v-icon v-text="item.icon"></v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title v-text="item.text"></v-list-item-title>
+                            </v-list-item-content>
+                            </v-list-item>
+                        </v-list-item-group>
+                    </v-list>
+                 </v-card>
             </div>
             
             <div id="nom_salon" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
@@ -47,34 +55,26 @@
         <div style="position:absolute ; top:0 ; right:0 ; text-align:center ; float:right ; height:100% ; width:10% ; border-left-style: dashed ; border-color: gray">
             <h2>Amis</h2> 
             <div>
-                <div id="liste_amis" style="margin: auto ; max-height:60vh ; width: 100% ; border-style: solid ; border-color: gray ; overflow:auto; border-left-style: none ;">
-                    <ul>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                        <li>AMI 1</li>
-                    </ul>
+                <div style="margin: auto ; max-height:60vh ; width: 100% ; border-style: solid ; border-color: gray ; overflow:auto; border-left-style: none ;">
+                    <v-card id="liste_amis"
+                        class="mx-auto"
+                        max-width="100%"
+                        tile
+                    >
+                    <v-list rounded>
+                        <v-subheader>Liste des amis</v-subheader>
+                        <v-list-item-group v-model="item_friend" color="primary">
+                            <v-list-item
+                                v-for="(item_friend, j) in items_friends"
+                                :key="j"
+                            >
+                            <v-list-item-content>
+                                <v-list-item-title v-text="item_friend.text"></v-list-item-title>
+                            </v-list-item-content>
+                            </v-list-item>
+                        </v-list-item-group>
+                    </v-list>
+                 </v-card>
                 </div>
 
                 <v-text-field id="nom_ami" label="Nom de l'ami"></v-text-field>
@@ -92,6 +92,23 @@ export default {
   props: {
     msg: String
   },
+  data: () => ({
+      item: 1,
+      items: [
+        { text: 'Le salon des culs'},
+        { text: 'gros dep'},
+        { text: 'enculés'},
+        { text: 'salopards'},
+        { text: 'Conversions'},
+      ],
+      items_friends: [
+        { text: 'Florian'},
+        { text: 'Bastien'},
+        { text: 'Maxim'},
+        { text: 'Sandrine'},
+        { text: 'PD'},
+      ],
+    }),
   methods:{
       lancement_salon(){
           console.log("lancement salon")

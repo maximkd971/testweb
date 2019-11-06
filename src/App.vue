@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import home from './components/salons.vue'
+import home from './components/room.vue'
 
 export default {
   name: 'app',

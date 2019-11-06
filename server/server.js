@@ -1,8 +1,7 @@
 var app = require('express')(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
-    fs = require('fs'),
-    ent = require('ent'); // Permet de bloquer les caractères HTML (sécurité équivalente à htmlentities en PHP)
+    fs = require('fs'); // Permet de bloquer les caractères HTML (sécurité équivalente à htmlentities en PHP)
 
 var listeSalons = [];
 
@@ -17,10 +16,16 @@ var jeux = {};
 
 var salons = [];
 
+var accountList = [];
+
 const readline = require('readline');
 
 const rl = readline.createInterface({
-    input: fs.createReadStream('rooms.txt')
+    input: fs.createReadStream('data/rooms.txt')
+});
+
+const account = readline.createInterface({
+    input: fs.createReadStream('data/account.txt')
 });
 
 // Each new line emits an event - every time the stream receives \r, \n, or \r\n
@@ -28,9 +33,16 @@ rl.on('line', (line) => {
     listeSalons.push(line);
 });
 
-rl.on('close', () => {
-    console.log('Done reading file');
+account.on('line', (line) => {
+    accountList.push(line.split(';'));
 });
+
+account.on('close', () => {
+    for(elt in accountList){
+        console.log(accountList[elt]);
+    }
+});
+
 
 
 
@@ -39,8 +51,15 @@ io.sockets.on('connection', function (socket, pseudo) {
     // Vide.
         // EMIT liste_salon
         // Tableau de String
-    socket.on('connexion', function(){
-        socket.emit('liste_salon', salons);
+    socket.on('connexion', function(pseudo, password){
+        console.log('Tentative de connexion : ' + pseudo + ' - ' + password);
+        for(elt in accountList){
+            if(pseudo === elt[0] && password === elt[1]){
+                socket.emit('liste_salon', salons);
+                console.log('Connexion de ' + pseudo);
+            }
+        }
+
     });
 
     // ON nouveau_salon
@@ -60,7 +79,7 @@ io.sockets.on('connection', function (socket, pseudo) {
         jeux[salon].listeJoueur.push(pseudo+'_'+salon+'_'+tour);
         jeux[salon].listeSocket.push(socket);
 
-        for(var i = 0 ; i < jeux[salon].listeSocket.length){
+        for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
             jeux[salon].listeSocket[i].emit('liste_joueur', [jeux[salon].listeJoueur, pseudo+'_'+salon+'_'+tour]);
         }
     });
@@ -71,7 +90,7 @@ io.sockets.on('connection', function (socket, pseudo) {
         // Tableau. Premier élément = token du joueur a qui c'est le tour, deuxième élément : Le début du mot à trouver (la lettre / la chaine de mots)
     socket.on('debut_jeu', function(salon){
         // Supprimer du fichier
-        for(var i = 0 ; i < jeux[salon].listeSocket.length){
+        for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
             jeux[salon].lettre = 'A'; // TODO : lettre aléatoire
             jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1]], 'A'); // TODO : lettre aléatoire
         }
@@ -88,12 +107,12 @@ io.sockets.on('connection', function (socket, pseudo) {
         var salon = token.split('_')[1];
          if(mot.startsWith(jeux[salon].lettre)){ // TODO : et mot présent dans un fichier dico
              jeux[salon].tour++;
-             for(var i = 0 ; i < jeux[salon].listeSocket.length){
+             for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
                 jeux[salon].lettre = 'B'; // TODO : lettre aléatoire
                 jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1]], 'B'); // TODO : lettre aléatoire
             }
          } else {
-             for(var i = 0 ; i < jeux[salon].listeSocket.length){
+             for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
                 jeux[salon].listeSocket[i].emit('encore');
             }
          }

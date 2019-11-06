@@ -1,16 +1,11 @@
 <template>
-    <home/>
+  <div id="app">
+    <home v-if="window.location.pathname === '/'"/>
+    <salons v-if="window.location.pathname === '/salons'"/>
+  </div>
 </template>
 
 <script>
-import home from './components/game.vue'
-
-export default {
-  name: 'app',
-  components: {
-    home
-  }
-}
 </script>
 
 <style>

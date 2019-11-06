@@ -4,11 +4,12 @@
         <div style="margin:auto; text-align:center ; float:left ;  height:100vh; width:9%; border-right-style: dashed ; border-color: gray;">
             <div><h2> Nous soutenir !</h2></div>
             <div style="margin-top:125% ; ">
-                <v-img src="../assets/fb.png" aspect-ratio="2"></v-img>
                 <br>
-                <v-img src="../assets/ins.png" aspect-ratio="2"></v-img>
+                <v-img class="v-img" v-on:click="redirection('https://facebook.fr')" src="../assets/fb.png" aspect-ratio="2" title="https://facebook.fr"></v-img>
                 <br>
-                <v-img src="../assets/twi.png" aspect-ratio="2"></v-img>
+                <v-img class="v-img" v-on:click="redirection('https://instagram.fr')" src="../assets/ins.png" aspect-ratio="2" title="https://instagram.fr"></v-img>
+                <br>
+                <v-img class="v-img" v-on:click="redirection('https://twitter.fr')" src="../assets/twi.png" aspect-ratio="2" title="https://twitter.fr"></v-img>
             </div>
         </div>
 
@@ -79,7 +80,7 @@
 
                 <v-text-field id="nom_ami" label="Nom de l'ami"></v-text-field>
                 
-                <v-btn x-small v-on:click="ajout_ami" id="add_ami" rounded width="70%" height="79%" color="#CDC5C4">Ajout ami</v-btn>
+                <v-btn x-small v-on:click="ajout_ami" id="add_ami" rounded width="100%" height="50" color="#CDC5C4">Ajout ami</v-btn>
 
             </div>
         </div>
@@ -94,12 +95,12 @@ export default {
   },
   data: () => ({
       item: 1,
+      item_friend: 1,
       items: [
         { text: 'Le salon des culs'},
         { text: 'gros dep'},
         { text: 'enculés'},
         { text: 'salopards'},
-        { text: 'Conversions'},
       ],
       items_friends: [
         { text: 'Florian'},
@@ -115,11 +116,17 @@ export default {
       },
       ajout_ami(name){
           console.log(name)
-      }
+      },
+      redirection(lien){
+        document.location.href=lien
+      },
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.v-img:hover{
+    cursor: pointer;
+}
 </style>

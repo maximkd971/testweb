@@ -1,7 +1,7 @@
 var socket = null;
-
+import Vue from 'vue'
 var app = new Vue({
-	el :"#content",
+	el :"#app",
     data :{
     	pseudo: '',
     	word: '',
@@ -17,8 +17,8 @@ var app = new Vue({
     	emptyRoom : false,
     	entrer_mot : [],
     	nouveau_salon : [],
-    	liste_salon : [],
-    	liste_joueur : [],
+    	liste_room : [],
+    	liste_player : [],
     	log : []
     },
 
@@ -26,9 +26,10 @@ var app = new Vue({
     	//Connexion de l'utilisateur
     	//Envoyer juste le pseudo au serveur et stocker dans une variable de session
     	session : function(){
+    		console.log("ok");
     		if (this.pseudo != '' && this.password != ''){
     			this.emptyPseudo = false;
-    			console.log("ok");
+    			
 	    		if (sessionStorage.getItem("autosave")) {
 				  // Restauration du contenu de session
 				  sessionStorage.clear();
@@ -43,6 +44,7 @@ var app = new Vue({
 	    		this.log = [];
 	    	}
 	    	else {
+	    		console.log("ok");
 	    		this.emptyPseudo = true;
 	    	}
     	},
@@ -85,14 +87,16 @@ var app = new Vue({
     	}
     },
 
-
+    create : function(){
+    	socket = io('192.8.94.235:8080')
+    },
     mounted : function(){
     	socket.on('liste_salon', function(data){
-    		app.liste_salon.push(data);
+    		app.liste_room.push(data);
     	})
 
     	socket.on('liste_joueur', function (data){
-    		app.liste_joueur.push(data[0]);
+    		app.liste_player.push(data[0]);
     		app.token = data[1];
     	})
 
@@ -101,7 +105,7 @@ var app = new Vue({
     		app.word2Find = data [1];
     	})
     	socket.on('boom' , function(data){
-    		app.liste_joueur.push(data[0]);
+    		app.liste_player.push(data[0]);
     		app.mort = data[1];
     	})
     },

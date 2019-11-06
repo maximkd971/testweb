@@ -51,12 +51,14 @@ io.sockets.on('connection', function (socket, pseudo) {
     // Vide.
         // EMIT liste_salon
         // Tableau de String
-    socket.on('connexion', function(pseudo, password){
-        console.log('Tentative de connexion : ' + pseudo + ' - ' + password);
+    socket.on('connexion', function(logInfo){
+        console.log('Tentative de connexion : ' + logInfo[0] + ' - ' + logInfo[1]);
         for(elt in accountList){
-            if(pseudo === elt[0] && password === elt[1]){
-                socket.emit('liste_salon', salons);
-                console.log('Connexion de ' + pseudo);
+            console.log()
+            if(logInfo[0] === accountList[elt][0] && logInfo[1] === accountList[elt][1]){
+                console.log(listeSalons);
+                socket.emit('liste_salon', listeSalons);
+                console.log('Connexion de ' + logInfo[0]);
             }
         }
 

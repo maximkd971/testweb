@@ -25,7 +25,7 @@
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
-                <v-form>
+                <v-form @submit.prevent="session">
                   <v-text-field
                     label="Login"
                     name="login"
@@ -54,8 +54,10 @@
 </template>
 
 <script>
+require('../js/client.js')
 export default {
   name: 'home',
+
   props: {
     msg: String
   }

@@ -11,6 +11,7 @@ var app = new Vue({
     	tour : '',
     	word2Find : '',
     	mort : '',
+    	password :'',
     	emptyPseudo : false,
     	emptyWord : false,
     	emptyRoom : false,
@@ -18,22 +19,28 @@ var app = new Vue({
     	nouveau_salon : [],
     	liste_salon : [],
     	liste_joueur : [],
+    	log : []
     },
 
     methods :{
     	//Connexion de l'utilisateur
     	//Envoyer juste le pseudo au serveur et stocker dans une variable de session
     	session : function(){
-    		if (this.pseudo != ''){
+    		if (this.pseudo != '' && this.password != ''){
     			this.emptyPseudo = false;
+    			console.log("ok");
 	    		if (sessionStorage.getItem("autosave")) {
 				  // Restauration du contenu de session
 				  sessionStorage.clear();
 				}
 				// Enregistrement de la saisie utilisateur dans le stockage de session
+				this.log.push(pseudo);
+				this.log.push(password);
 				sessionStorage.setItem("autosave", this.pseudo);
-	    		socket.emit('connexion', this.pseudo);
+	    		socket.emit('connexion', this.log);
 	    		this.pseudo = '';
+	    		this.password = '';
+	    		this.log = [];
 	    	}
 	    	else {
 	    		this.emptyPseudo = true;
@@ -76,10 +83,6 @@ var app = new Vue({
     		this.debut_jeu = token.split('_')[1];
     		socket.emit('debut_jeu', this.debut_jeu);
     	}
-    },
-
-    created : function(){
-        socket = io();
     },
 
 

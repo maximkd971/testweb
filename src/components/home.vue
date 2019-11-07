@@ -41,6 +41,7 @@
                     v-model="password"
                   ></v-text-field>
                   <v-btn v-on:click="session(pseudo, password)" color="#575453">Connexion</v-btn>
+                  <p v-if ='errPseudo' style="color:red;">Les identifiants entrés sont incorrects</p>
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -64,8 +65,7 @@ export default {
     data : () => ({
       pseudo: '',
       password :'',
-      emptyPseudo : false,
-      liste_room : [],
+      errPseudo : false,
       log : []
     }),
 
@@ -74,23 +74,17 @@ export default {
       //Envoyer juste le pseudo au serveur et stocker dans une variable de session
       session : function(pseudo, password){
         if (pseudo != '' && password != ''){
-          this.emptyPseudo = false;
-          
-          if (sessionStorage.getItem("autosave")) {
-            // Restauration du contenu de session
-            sessionStorage.clear();
-          }
+          this.errPseudo = false;
+          this.pseudo = pseudo;
+          this.password = password;
           // Enregistrement de la saisie utilisateur dans le stockage de session
           this.log.push(pseudo);
           this.log.push(password);
-          sessionStorage.setItem("autosave", pseudo);
           socket.emit('connexion', this.log);
-          this.pseudo = '';
-          this.password = '';
           this.log = [];
         }
         else {
-          this.emptyPseudo = true;
+          this.errPseudo = true;
         }
       }
     },
@@ -102,10 +96,22 @@ export default {
 
     mounted: function(){
       let self = this;
-      socket.on('liste_salon', function(data){
-          self.liste_room.push(data);
-          document.location.href='/room.vue'
+      sessionStorage.clear();
+      socket.on('connexion_success', function(data){
+          if (sessionStorage.getItem("autosave")) {
+            // Restauration du contenu de session
+            sessionStorage.clear();
+          }
+          sessionStorage.setItem("autosave", self.pseudo);
+          self.errPseudo = false
+          console.log(data)
+          this.pseudo = '';
+          this.password = '';
+          document.location.href= '/room'
         })
+      socket.on('connexion_failed', function(data){
+          self.errPseudo = true
+      })
     },
 }
 

@@ -57,12 +57,22 @@ io.sockets.on('connection', function (socket, pseudo) {
             console.log()
             if(logInfo[0] === accountList[elt][0] && logInfo[1] === accountList[elt][1]){
                 console.log(listeSalons);
-                socket.emit('liste_salon', listeSalons);
+                socket.emit('connexion_success', 'Succes de la connexion');
                 console.log('Connexion de ' + logInfo[0]);
+            }
+            else{
+                socket.emit('connexion_failed', 'Echec de la connexion');
+                console.log('Echec de la connexion de ' + logInfo[0]);
             }
         }
 
     });
+
+    //ON acces_room
+    //Lorsqu'un utilise accède à room on renvoie la liste des salons
+    socket.on('acces_room', function(data){
+        socket.emit('liste_salon', listeSalons);
+    })
 
     // ON nouveau_salon
     // Comme entrer_salon mais avec ajout du salon dans le fichier

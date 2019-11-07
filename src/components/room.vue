@@ -35,7 +35,7 @@
                                 <v-icon v-text="item.icon"></v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                                <v-list-item-title v-text="item.text"></v-list-item-title>
+                                <v-list-item-title v-text="item"></v-list-item-title>
                             </v-list-item-content>
                             </v-list-item>
                         </v-list-item-group>
@@ -88,6 +88,8 @@
 </template>
 
 <script>
+import io from 'socket.io-client';
+var socket = io('10.239.161.26:3535');
 export default {
   name: 'game',
   props: {
@@ -96,18 +98,8 @@ export default {
   data: () => ({
       item: 1,
       item_friend: 1,
-      items: [
-        { text: 'Le salon des culs'},
-        { text: 'gros dep'},
-        { text: 'enculés'},
-        { text: 'salopards'},
-      ],
+      items: [],
       items_friends: [
-        { text: 'Florian'},
-        { text: 'Bastien'},
-        { text: 'Maxim'},
-        { text: 'Sandrine'},
-        { text: 'PD'},
       ],
     }),
   methods:{
@@ -120,6 +112,20 @@ export default {
       redirection(lien){
         document.location.href=lien
       },
+  },
+
+  mounted : function(){
+    let self = this
+    console.log(sessionStorage.getItem('autosave'))
+    if (sessionStorage.getItem("autosave") == null){
+      document.location.href='/'
+    }
+    socket.emit('acces_room','Entre dans la room')
+    socket.on('liste_salon', function(data){
+        for(var i = 0; i < data.length; i++){
+          self.items.push(data[i]);
+        }
+    })
   }
 }
 </script>

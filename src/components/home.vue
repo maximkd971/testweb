@@ -103,9 +103,8 @@ export default {
     mounted: function(){
       let self = this;
       socket.on('liste_salon', function(data){
-          console.log(self);
           self.liste_room.push(data);
-          document.location.href='./room.vue'
+          document.location.href='/room.vue'
         })
     },
 }

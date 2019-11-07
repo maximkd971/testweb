@@ -1,11 +1,26 @@
 import Vue from 'vue'
-import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import VueSocketIO from 'vue-socket.io'
 import VueRouter from 'vue-router'
+import home from './components/home.vue'
+import room from './components/room.vue'
+import salons from './components/salons.vue'
+import App from './App.vue'
+
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
+const routes = [
+  { path: '/', component: home },
+  { path: '/room', component: room },
+  { path: '/salons', component: salons }
+]
+
+const router = new VueRouter({
+  mode : 'history',
+  routes
+ })
+
 Vue.use(new VueSocketIO({
 	debug:true,
 	connection:'http://10.239.161.26:3535'
@@ -13,5 +28,6 @@ Vue.use(new VueSocketIO({
 
 new Vue({
   vuetify,
+  router,
   render: h => h(App)
 }).$mount('#app')

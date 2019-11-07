@@ -11,7 +11,7 @@ var listeSalons = [];
     // Tour
     // Timer
     // Lettre
-
+var notFound = true;
 var jeux = {};
 
 var salons = [];
@@ -56,15 +56,19 @@ io.sockets.on('connection', function (socket, pseudo) {
         for(elt in accountList){
             console.log()
             if(logInfo[0] === accountList[elt][0] && logInfo[1] === accountList[elt][1]){
+                notFound = false;
                 console.log(listeSalons);
                 socket.emit('connexion_success', 'Succes de la connexion');
                 console.log('Connexion de ' + logInfo[0]);
             }
-            else{
-                socket.emit('connexion_failed', 'Echec de la connexion');
-                console.log('Echec de la connexion de ' + logInfo[0]);
-            }
+
         }
+        if (notFound == true){
+            socket.emit('connexion_failed', 'Echec de la connexion');
+            console.log('Echec de la connexion de ' + logInfo[0]);
+        }
+        notFound = true;
+        
 
     });
 

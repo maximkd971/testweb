@@ -2,7 +2,7 @@
     <div id="content">
         <div style="position:absolute ; margin:auto; text-align:center ; float:left ;  height:100%; width:15%; border-right-style: solid ; border-color: gray">
             <div>
-                <p><v-btn x-small v-on:click="quitter" rounded width="100%" height="55" color="#CDC5C4">Quitter</v-btn></p>
+                <p><v-btn x-small v-on:click="quitter" rounded width="100%" height="55" :to="{name:'room'}" color="#CDC5C4">Quitter</v-btn></p>
             </div>
             <br>
             <div id="scores" style="margin: auto ; height:80vh ; width: 100% ; border-style: solid ; border-color: gray ; overflow:auto ; border-right-style: none ; border-bottom-style: none">

@@ -58,7 +58,7 @@
 </template>
 <script>
 import io from 'socket.io-client';
-var socket = io('10.239.161.26:3535');
+var socket = io('10.239.161.57:3535');
 export default {
   name: 'home',
 

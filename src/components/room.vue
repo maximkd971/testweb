@@ -90,7 +90,7 @@
 
 <script>
 import io from 'socket.io-client';
-var socket = io('10.239.161.26:3535');
+var socket = io('10.239.161.57:3535');
 export default {
   name: 'game',
   props: {
@@ -120,8 +120,8 @@ export default {
       newRoom : function(roomName){
         if(roomName != ''){
           this.emptyRoom = false;
-          this.pseudo = sessionStorage.getItem();
-          this.logRoom.push(pseudo);
+          this.pseudo = sessionStorage.getItem('autosave');
+          this.logRoom.push(this.pseudo);
           this.logRoom.push(roomName);
           socket.emit('nouveau_salon', this.logRoom);
           this.pseudo = '';

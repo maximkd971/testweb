@@ -82,22 +82,26 @@ io.sockets.on('connection', function (socket, pseudo) {
     // Comme entrer_salon mais avec ajout du salon dans le fichier
     socket.on('nouveau_salon', function(pseudo, salon){
         // Ecrire le salon dans le fichier
-       jeux[salon] = {listeJoueur: [pseudo+'_'+salon+'_1'], tour: 1, timer: 0, listeSocket: [socket]};
-        socket.emit('liste_joueur', [jeux[salon].listeJoueur, pseudo+'_'+salon+'_1']);
+       //jeux[salon] = {listeJoueur: [pseudo+'_'+salon+'_1'], tour: 1, timer: 0, listeSocket: [socket]};
+        //socket.emit('liste_joueur', [jeux[salon].listeJoueur, pseudo+'_'+salon+'_1']);
+        socket.emit();
     });
 
     // ON entrer_salon
     // Envoi d'un tableau avec pseudo et nom du salon
         // EMIT liste_joueur
         // Tableau avec tous les TOKENS
-    socket.on('entrer_salon', function(pseudo, salon){
-        jeux[salon].tour++;
-        jeux[salon].listeJoueur.push(pseudo+'_'+salon+'_'+tour);
-        jeux[salon].listeSocket.push(socket);
+    socket.on('entrer_salon', function(pseudo){
+        
+        jeux[pseudo[1]] = {listeJoueur: [pseudo[0]+'_'+pseudo[1]+'_1'], tour: 1, timer: 0, listeSocket: [socket]};
+        jeux[pseudo[1]].tour++;
+        jeux[pseudo[1]].listeJoueur.push(pseudo[0]+'_'+pseudo[1]+'_'+jeux[pseudo[1]].tour);
+        jeux[pseudo[1]].listeSocket.push(socket);
 
-        for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
-            jeux[salon].listeSocket[i].emit('liste_joueur', [jeux[salon].listeJoueur, pseudo+'_'+salon+'_'+tour]);
+        for(var i = 0 ; i < jeux[pseudo[1]].listeSocket.length ; i++){
+            jeux[pseudo[1]].listeSocket[i].emit('liste_joueur', [jeux[pseudo[1]].listeJoueur, pseudo[0]+'_'+pseudo[1]+'_'+jeux[pseudo[1]].tour]);
         }
+        console.log(jeux[pseudo[1]].listeJoueur);
     });
 
     // ON debut_jeu

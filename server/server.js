@@ -37,7 +37,6 @@ account.on('line', (line) => {
     accountList.push(line.split(';'));
 });
 
-fs.unlinkSync('data/rooms.txt');
 console.log('Serveur lancé !');
 
 
@@ -61,7 +60,7 @@ io.sockets.on('connection', function (socket, pseudo) {
         }
         if (notFound == true){
             socket.emit('connexion_failed', 'Echec de la connexion');
-            console.log('Tentative de connexion de ' + logInfo[0] § ' - ' + logInfo[1]);
+            console.log('Tentative de connexion de ' + logInfo[0] + ' - ' + logInfo[1]);
         }
         notFound = true;
         

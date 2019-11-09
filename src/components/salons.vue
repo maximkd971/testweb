@@ -159,7 +159,7 @@ export default {
       }
       self.chaine = data[1]
     })
-
+    document.getElementById(data[0]).style.border-color="green"
     socket.on('encore', function(data){
       
     })

@@ -25,7 +25,7 @@
                 <p>Mot avec {{chaine}}</p>
                 <form @submit.prevent="entrer_mot(mot)">
                     <div id = "mot_joueur" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
-                    <v-text-field v-model = "mot" @input="seeChange(mot)"></v-text-field>
+                    <v-text-field v-model = "mot" @input="seeChange"></v-text-field>
                     </div>
                 </form>
                 <p>{{changing}}</p>
@@ -92,9 +92,8 @@ export default {
           this.mot = ""
       },
       //Voir les mots entré en direct par le user
-      seeChange : function(mot){
+      seeChange : function(){
         this.salon = this.$route.params.id
-        this.mot = mot
         this.logChange.push(this.salon)
         this.logChange.push(this.mot)
         socket.emit('change', this.logChange);

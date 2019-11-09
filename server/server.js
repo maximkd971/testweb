@@ -5,6 +5,7 @@ var app = require('express')(),
 
 var listeSalons = [];
 
+var listeChaine = [];
 // Dictionnaire JS avec Nom de salon comme clé
 // Chaque élément du dictionnaire est une structure
     // Liste joueur
@@ -28,6 +29,10 @@ const account = readline.createInterface({
     input: fs.createReadStream('data/account.txt')
 });
 
+const char = readline.createInterface({
+   input: fs.createReadStream('data/referentiel_chaines.txt')
+});
+
 // Each new line emits an event - every time the stream receives \r, \n, or \r\n
 rl.on('line', (line) => {
     listeSalons.push(line);
@@ -35,6 +40,10 @@ rl.on('line', (line) => {
 
 account.on('line', (line) => {
     accountList.push(line.split(';'));
+});
+
+char.on('line', (line) => {
+   listeChaine.push(line);
 });
 
 console.log('Serveur lancé !');
@@ -96,14 +105,10 @@ io.sockets.on('connection', function (socket, pseudo) {
         jeux[pseudo[1]].listeJoueur.push(pseudo[0]+'_'+pseudo[1]+'_'+jeux[pseudo[1]].tour);
         jeux[pseudo[1]].listeSocket.push(socket);
 
-
-        console.log(jeux[pseudo[1]].listeJoueur);
-
         for(var i = 0 ; i < jeux[pseudo[1]].listeSocket.length -1 ; i++){
-            jeux[pseudo[1]].listeSocket[i].emit('liste_joueur', [[jeux[pseudo[1]].listeJoueur[jeux[pseudo[1]].listeJoueur.length -1]]]);
+            jeux[pseudo[1]].listeSocket[i].emit('liste_joueur', [[jeux[pseudo[1]].listeJoueur[jeux[pseudo[1]].listeJoueur.length -1]], jeux[pseudo[1]].listeJoueur[i]]);
         }
-        console.log(jeux[pseudo[1]].listeJoueur);
-        socket.emit('liste_joueur', [jeux[pseudo[1]].listeJoueur]);
+        socket.emit('liste_joueur', [jeux[pseudo[1]].listeJoueur, pseudo[0]+'_'+pseudo[1]+'_'+jeux[pseudo[1]].tour]);
         console.log(pseudo[0] + ' vient de rentrer dans le salon ' + pseudo[1]);
     });
 
@@ -113,9 +118,12 @@ io.sockets.on('connection', function (socket, pseudo) {
         // Tableau. Premier élément = token du joueur a qui c'est le tour, deuxième élément : Le début du mot à trouver (la lettre / la chaine de mots)
     socket.on('debut_jeu', function(salon){
         // Supprimer du fichier
+        var newLettre = lettreAleatoire();
+             jeux[salon].lettre = newLettre;
+        console.log(newLettre);
         for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
-            jeux[salon].lettre = 'A'; // TODO : lettre aléatoire
-            jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1], 'A']); // TODO : lettre aléatoire
+            jeux[salon].lettre = newLettre; // TODO : lettre aléatoire
+            jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1], newLettre]);
         }
         console.log('Partie lancé dans le salon ' + salon);
     });
@@ -127,15 +135,24 @@ io.sockets.on('connection', function (socket, pseudo) {
         // EMIT trouve_mot
         // ELSE
         // EMIT encore
-    socket.on('entrer_mot', function(token, mot){
+    socket.on('entrer_mot', function(data){
+        console.log(data);
+        var token = data[0];
+        var mot = data[1];
         var salon = token.split('_')[1];
-         if(mot.startsWith(jeux[salon].lettre)){ // TODO : et mot présent dans un fichier dico
+        console.log(token.split('_')[0] + ' envoi le mot ' + mot + ' sur salon ' + salon);
+        console.log(jeux[salon].lettre);
+         if(mot.includes(jeux[salon].lettre) && inDico(mot)){ // TODO : et mot présent dans un fichier dico
              jeux[salon].tour++;
+             var newLettre = lettreAleatoire();
+             jeux[salon].lettre = newLettre;
+             console.log(newLettre);
              for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
                 jeux[salon].lettre = 'B'; // TODO : lettre aléatoire
-                jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1], 'B']); // TODO : lettre aléatoire
+                jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1], newLettre]); // TODO : lettre aléatoire
             }
          } else {
+             console.log('FAUX');
              for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
                 jeux[salon].listeSocket[i].emit('encore');
             }
@@ -149,6 +166,14 @@ var fileContentRooms = function(salon){
         ret+=listeSalons[elt]+'\n';
     }
     return ret;
+};
+
+var lettreAleatoire = function(){
+    return listeChaine[Math.floor(Math.random() * (81056 - 1) + 1)];
+};
+
+var inDico = function(){
+    return true;
 };
 
 server.listen(3535);

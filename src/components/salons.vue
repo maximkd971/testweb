@@ -69,7 +69,7 @@ export default {
       lancement_partie(){
         this.salon = this.$route.params.id;
         socket.emit("debut_jeu", salon)
-      }
+      },
       quitter(){
           console.log("lancement salon")
       },

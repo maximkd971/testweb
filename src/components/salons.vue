@@ -27,7 +27,7 @@
                 <p><v-btn id="bouton_lancement" x-small v-on:click="lancement_partie" rounded width="33%" height="55" color="#CDC5C4">Lancer la partie</v-btn></p>
             </div>
             <div style="margin: auto ; height:20% ; width: 100%">
-                <div v-for='player in liste_joueur' :key="player" class="divPlayer" style="margin: auto ; height:100% ; border-style: solid ; border-color: gray ; float: left ; border-right-style: none ; ">
+                <div v-bind:id='player' v-for='player in liste_joueur' :key="player" class="divPlayer" style="margin: auto ; height:100% ; border-style: solid ; border-color: gray ; float: left ; ">
                     {{player}}
                 </div>
             </div>

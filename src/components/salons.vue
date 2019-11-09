@@ -11,19 +11,24 @@
         </div>
 
         <div style="margin:auto; text-align:center ;  height:100vh; width:70%;">
-            <div style="margin: auto ; height:20% ; width: 100%">
-                <p><v-btn x-small v-on:click="lancer_partie" rounded width="33%" height="55" color="#CDC5C4">Lancer la partie</v-btn></p>
+            <div style="margin: auto ; height:40% ; width: 100%">
+                <div></div>
+                <p><v-btn id="bouton_lancement" x-small v-on:click="lancement_partie" rounded width="33%" height="55" color="#CDC5C4">Lancer la partie</v-btn></p>
             </div>
-            <div style="margin: auto ; height:60% ; width: 100%">
+            <div style="margin: auto ; height:20% ; width: 100%">
                 <div v-for='player in liste_joueur' :key="player" class="divPlayer" style="margin: auto ; height:100% ; border-style: solid ; border-color: gray ; float: left">
                     {{player}}
                 </div>
             </div>
-            <div style="margin: auto ; height:20% ; width: 100%">
+            <div id="envoie_des_mots" style="margin: auto ; height:40% ; width: 100% ; display: none">
+                <div style="margin: auto ; height:40% ; width: 100%"></div>
                 <p>Mot avec {{chaine}}</p>
-                <div id = "mot_joueur" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
-                    <v-text-field v-model = "mot"></v-text-field>
-                </div>
+                <form @submit.prevent="entrer_mot(mot)">
+                    <div id = "mot_joueur" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
+                    <v-text-field v-model = "mot" @input="seeChange(mot)"></v-text-field>
+                    </div>
+                </form>
+                <p>{{changing}}</p>
             </div>
 
         </div>
@@ -57,10 +62,12 @@ export default {
     size :'',
     chaine : '',
     message : '',
+    changing : '',
     turn : false,
     liste_joueur : [],
     logEnterRoom : [],
     logMot :[],
+    logChange :[],
   }),
   props: {
     msg: String
@@ -68,18 +75,35 @@ export default {
   methods:{
       lancement_partie(){
         this.salon = this.$route.params.id;
+<<<<<<< HEAD
         socket.emit("debut_jeu", salon)
+=======
+        socket.emit("debut_jeu", this.salon)
+        document.getElementById('bouton_lancement').style.display = 'none'
+        document.getElementById('envoie_des_mots').style.display = 'block'
+>>>>>>> maxienbomflo/client_design
       },
       quitter(){
           console.log("lancement salon")
       },
-      entrer_mot(message){
+      entrer_mot(mot){
+          console.log(mot)
+          console.log(this.token)
           this.logMot.push(this.token)
-          this.message = message
-          this.logMot.push(this.message)
+          this.mot = mot
+          this.logMot.push(this.mot)
           socket.emit('entrer_mot',this.logMot)
-          this.message = ""
-      }
+          this.mot = ""
+      },
+      //Voir les mots entré en direct par le user
+      seeChange : function(mot){
+        this.salon = this.$route.params.id
+        this.mot = mot
+        this.logChange.push(this.salon)
+        this.logChange.push(this.mot)
+        socket.emit('change', this.logChange);
+        this.mot = ''
+      },
   },
 
   mounted: function(){
@@ -97,7 +121,10 @@ export default {
     self.pseudo='';
     self.logEnterRoom = [];
 
-
+    socket.on('broadcast', function(data) {
+      console.log(data);
+      self.changing = data;
+    })
 
     socket.on('liste_joueur', function(data){
         for(var i = 0; i < data[0].length; i++){
@@ -116,13 +143,13 @@ export default {
         
         
     })
-
+    console.log(self.token)
     socket.on('trouve_mot', function(data){
       if (data[0]  == self.token){
-        turn = true
+        self.turn = true
       }
       else {
-        turn = false
+        self.turn = false
       }
       self.chaine = data[1]
     })

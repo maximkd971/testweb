@@ -35,10 +35,10 @@
                 </div>
 
                 <div id="message_a_envoyer" style="width: 100% ; margin:auto ; text-align:center ; margin-bottom: 55;">
-                    <v-text-field label="Votre message"></v-text-field>
+                    <v-text-field v-if="turn" label="Votre message"></v-text-field>
                 </div>
 
-                <p><v-btn x-small v-on:click="envoyer_message" rounded width="100%" height="55" color="#CDC5C4">Envoyer un message</v-btn></p>
+                <p><v-btn x-small v-if="turn" v-on:click="envoyer_message" rounded width="100%" height="55" color="#CDC5C4">Envoyer un message</v-btn></p>
             </div>
         </div>
     </div>

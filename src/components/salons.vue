@@ -2,7 +2,7 @@
     <div id="content">
         <div style="position:absolute ; margin:auto; text-align:center ; float:left ;  height:100%; width:15%; border-right-style: solid ; border-color: gray">
             <div>
-                <p><v-btn x-small v-on:click="quitter" rounded width="100%" height="55" :to="{name:'room'}" color="#CDC5C4">{{token}}</v-btn></p>
+                <p><v-btn x-small v-on:click="quitter" rounded width="100%" height="55" :to="{name:'room'}" color="#CDC5C4">Quitter</v-btn></p>
             </div>
             <br>
             <div id="scores" style="margin: auto ; height:80vh ; width: 100% ; border-style: solid ; border-color: gray ; overflow:auto ; border-right-style: none ; border-bottom-style: none">
@@ -39,7 +39,7 @@
 
 <script>
 import io from 'socket.io-client';
-var socket = io('127.0.0.1:3535');
+var socket = io('192.168.1.73:3535');
 export default {
   name: 'game',
   data: () => ({
@@ -78,18 +78,21 @@ export default {
 
 
     socket.on('liste_joueur', function(data){
-      console.log(data[0].length);
         for(var i = 0; i < data[0].length; i++){
           self.liste_joueur.push(data[0][i]);
         }
-        var size = 100/data[0].length;
+        var size = 100/self.liste_joueur.length;
         self.token = data[1];
-        var elm = document.getElementsByClassName('divPlayer')
-        for(var j = 0 ; j < elm.length; j++)
-        {
-            console.log(elm[j]);
-           elm[j].style.width = size + '%';
-        }
+        setTimeout(function(){
+            var elm = document.getElementsByClassName('divPlayer')
+            for(var j = 0 ; j < elm.length; j++)
+            {
+               elm[j].style.width = size + '%';
+            }
+        }, 500)
+            
+        
+        
     })
   }
 }

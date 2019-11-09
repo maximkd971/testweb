@@ -105,7 +105,7 @@ export default {
         this.logChange.push(this.salon)
         this.logChange.push(this.mot)
         socket.emit('change', this.logChange);
-        this.logChange = [],
+        this.logChange = []
       },
   },
 

@@ -101,11 +101,11 @@ export default {
       },
       //Voir les mots entré en direct par le user
       seeChange : function(){
-        console.log(this.mot)
         this.salon = this.$route.params.id
         this.logChange.push(this.salon)
         this.logChange.push(this.mot)
         socket.emit('change', this.logChange);
+        this.logChange = [],
       },
   },
 
@@ -125,7 +125,6 @@ export default {
     self.logEnterRoom = [];
 
     socket.on('broadcast', function(data) {
-      console.log(data);
       self.changing = data;
     })
 

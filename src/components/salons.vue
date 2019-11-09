@@ -35,9 +35,10 @@
                 <p>Mot avec <strong>{{chaine}}</strong></p>
                 <form @submit.prevent="entrer_mot(mot)">
                     <div id = "mot_joueur" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
-                    <v-text-field v-model = "mot"></v-text-field>
+                    <v-text-field v-model = "mot" @input="seeChange(mot)"></v-text-field>
                     </div>
                 </form>
+                <p>{{changing}}</p>
             </div>
 
         </div>
@@ -71,10 +72,12 @@ export default {
     size :'',
     chaine : '',
     message : '',
+    changing : '',
     turn : false,
     liste_joueur : [],
     logEnterRoom : [],
     logMot :[],
+    logChange :[],
   }),
   props: {
     msg: String
@@ -95,7 +98,16 @@ export default {
           this.logMot.push(this.mot)
           socket.emit('entrer_mot',this.logMot)
           this.mot = ""
-      }
+      },
+      //Voir les mots entré en direct par le user
+      seeChange : function(mot){
+        this.salon = this.$route.params.id
+        this.mot = mot
+        this.logChange.push(this.salon)
+        this.logChange.push(this.mot)
+        socket.emit('change', this.logChange);
+        this.mot = ''
+      },
   },
 
   mounted: function(){
@@ -113,7 +125,10 @@ export default {
     self.pseudo='';
     self.logEnterRoom = [];
 
-
+    socket.on('broadcast', function(data) {
+      console.log(data);
+      self.changing = data;
+    })
 
     socket.on('liste_joueur', function(data){
         for(var i = 0; i < data[0].length; i++){

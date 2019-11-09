@@ -17,7 +17,8 @@
                         <v-img src="../assets/bombe_1.png" aspect-ratio="2" height="200" width="300"></v-img>
                     </div>
                     <div style="float: left ; width: 40%">
-                        compteur
+                        <div style="margin: auto ; height:14vh ; width: 100%"></div>
+                        <p><FONT size="50">10,00</FONT></p>
                     </div>
                     <div style="float: left ; width: 30%">
                         <v-img src="../assets/bombe_1.png" aspect-ratio="2" height="200" width="300"></v-img>
@@ -45,7 +46,7 @@
 
         <div style="position:absolute ; top:0 ; right:0 ; text-align:center ; float:right ; height:100% ; width:15% ; border-left-style: solid ; border-color: gray">
             <div>
-                <div id="messages" style="margin: auto ; min-height:80vh ; width: 100% ; border-style: solid ; border-color: gray ; overflow:auto;">
+                <div id="messages" style="margin: auto ; min-height:80vh ; width: 100% ; border-style: solid ; border-left-style: none ;border-color: gray ; overflow:auto;">
 
                 </div>
 

@@ -11,7 +11,9 @@
         </div>
 
         <div style="margin:auto; text-align:center ;  height:100vh; width:70%;">
-            <div style="margin: auto ; height:20% ; width: 100%"></div>
+            <div style="margin: auto ; height:20% ; width: 100%">
+                <p><v-btn x-small v-on:click="lancer_partie" rounded width="33%" height="55" color="#CDC5C4">Lancer la partie</v-btn></p>
+            </div>
             <div style="margin: auto ; height:60% ; width: 100%">
                 <div v-for='player in liste_joueur' :key="player" class="divPlayer" style="margin: auto ; height:100% ; border-style: solid ; border-color: gray ; float: left">
                     {{player}}

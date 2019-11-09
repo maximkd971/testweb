@@ -17,7 +17,9 @@
                     {{player}}
                 </div>
             </div>
-            <div style="margin: auto ; height:20% ; width: 100%"></div>
+            <div style="margin: auto ; height:20% ; width: 100%">
+                <v-text-field id = "mot_joueur" label="Mot avec : {{chaine}}" v-model = "mot"></v-text-field>
+            </div>
 
         </div>
 
@@ -43,6 +45,7 @@ var socket = io('127.0.0.1:3535');
 export default {
   name: 'game',
   data: () => ({
+    mot : '',
     pseudo : '',
     saloin : '',
     token :'',

@@ -134,7 +134,6 @@ io.sockets.on('connection', function (socket, pseudo) {
         // EMIT trouve_mot
         // Tableau. Premier élément = token du joueur a qui c'est le tour, deuxième élément : Le début du mot à trouver (la lettre / la chaine de mots)
     socket.on('change', function(data){
-        // Supprimer du fichier
         salon = data[0];
         mot = data[1];
         for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
@@ -150,17 +149,18 @@ io.sockets.on('connection', function (socket, pseudo) {
         // ELSE
         // EMIT encore
     socket.on('entrer_mot', function(data){
-        console.log(data);
         var token = data[0];
         var mot = data[1];
         var salon = token.split('_')[1];
         console.log(token.split('_')[0] + ' envoi le mot ' + mot + ' sur salon ' + salon);
-        console.log(jeux[salon].lettre);
          if(mot.includes(jeux[salon].lettre) && inDico(mot)){ // TODO : et mot présent dans un fichier dico
              jeux[salon].tour++;
+             if (jeux[salon].tour > jeux[salon].listeJoueur.length){
+                 jeux[salon].tour = 1;
+             }
              var newLettre = lettreAleatoire();
              jeux[salon].lettre = newLettre;
-             console.log(newLettre);
+             console.log(jeux[salon].listeJoueur[jeux[salon].tour-1]);
              for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
                 jeux[salon].lettre = newLettre;
                 jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1], newLettre]); // TODO : lettre aléatoire

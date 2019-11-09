@@ -18,7 +18,10 @@
                 </div>
             </div>
             <div style="margin: auto ; height:20% ; width: 100%">
-                <v-text-field id = "mot_joueur" label="Mot avec : {{chaine}}" v-model = "mot"></v-text-field>
+                <p>Mot avec {{chaine}}</p>
+                <div id = "mot_joueur" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
+                    <v-text-field v-model = "mot"></v-text-field>
+                </div>
             </div>
 
         </div>
@@ -41,7 +44,7 @@
 
 <script>
 import io from 'socket.io-client';
-var socket = io('127.0.0.1:3535');
+var socket = io('192.168.1.73:3535');
 export default {
   name: 'game',
   data: () => ({

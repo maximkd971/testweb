@@ -96,6 +96,7 @@ export default {
           this.logMot.push(this.mot)
           socket.emit('entrer_mot',this.logMot)
           this.mot = ""
+          this.logMot = []
       },
       //Voir les mots entré en direct par le user
       seeChange : function(){

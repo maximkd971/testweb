@@ -50,9 +50,11 @@ export default {
   data: () => ({
     mot : '',
     pseudo : '',
-    saloin : '',
+    salon : '',
     token :'',
     size :'',
+    chaine : '',
+    turn : false,
     liste_joueur : [],
     logEnterRoom : [],
   }),
@@ -60,6 +62,10 @@ export default {
     msg: String
   },
   methods:{
+      lancement_partie(){
+        this.salon = this.$route.params.id;
+        socket.emit("debut_jeu", salon)
+      }
       quitter(){
           console.log("lancement salon")
       },
@@ -98,6 +104,16 @@ export default {
             console.log(elm[j]);
            elm[j].style.width = size + '%';
         }
+    })
+
+    socket.on('trouve_mot', function(data){
+      if (data[0]  == self.token){
+        turn = true
+      }
+      else {
+        turn = false
+      }
+      self.chaine = data[1]
     })
   }
 }

@@ -85,10 +85,8 @@ export default {
   methods:{
       lancement_partie(){
         this.salon = this.$route.params.id;
-        socket.emit("debut_jeu", this.salon)
-        document.getElementById('bouton_lancement').style.display = 'none'
-        document.getElementById('envoie_des_mots').style.display = 'block'
-        document.getElementById('compteur').style.display = 'block'
+        socket.emit('debut_jeu', this.salon)
+        
       },
       entrer_mot(mot){
           console.log(mot)
@@ -142,10 +140,13 @@ export default {
             {
                elm[j].style.width = size + '%';
             }
-        }, 500)
-            
-        
-        
+        }, 500) 
+    })
+      
+    socket.on('lancement_partie', function(){
+        document.getElementById('bouton_lancement').style.display = 'none'
+        document.getElementById('envoie_des_mots').style.display = 'block'
+        document.getElementById('compteur').style.display = 'block'
     })
     console.log(self.token)
     socket.on('trouve_mot', function(data){

@@ -35,10 +35,10 @@
                 </div>
 
                 <div id="message_a_envoyer" style="width: 100% ; margin:auto ; text-align:center ; margin-bottom: 55;">
-                    <v-text-field v-if="turn" label="Votre message"></v-text-field>
+                    <v-text-field v-if="turn" label="Votre message" v-model = "message"></v-text-field>
                 </div>
 
-                <p><v-btn x-small v-if="turn" v-on:click="envoyer_message" rounded width="100%" height="55" color="#CDC5C4">Envoyer un message</v-btn></p>
+                <p><v-btn x-small v-if="turn" v-on:click="entrer_mot(message)" rounded width="100%" height="55" color="#CDC5C4">Envoyer un message</v-btn></p>
             </div>
         </div>
     </div>
@@ -56,9 +56,11 @@ export default {
     token :'',
     size :'',
     chaine : '',
+    message : '',
     turn : false,
     liste_joueur : [],
     logEnterRoom : [],
+    logMot :[],
   }),
   props: {
     msg: String
@@ -71,8 +73,12 @@ export default {
       quitter(){
           console.log("lancement salon")
       },
-      envoyer_message(message){
-          console.log(self.token)
+      entrer_mot(message){
+          this.logMot.push(this.token)
+          this.message = message
+          this.logMot.push(this.message)
+          socket.emit('entrer_mot',this.logMot)
+          this.message = ""
       }
   },
 
@@ -116,6 +122,10 @@ export default {
         turn = false
       }
       self.chaine = data[1]
+    })
+
+    socket.on('encore', function(data){
+      
     })
   }
 }

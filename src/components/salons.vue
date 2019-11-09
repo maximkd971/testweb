@@ -27,14 +27,14 @@
                 <p><v-btn id="bouton_lancement" x-small v-on:click="lancement_partie" rounded width="33%" height="55" color="#CDC5C4">Lancer la partie</v-btn></p>
             </div>
             <div style="margin: auto ; height:20% ; width: 100%">
-                <div v-for='player in liste_joueur' :key="player" class="divPlayer" style="margin: auto ; height:100% ; border-style: solid ; border-color: gray ; float: left ; border-right-style: none ; ">
+                <div v-bind:id='player' v-for='player in liste_joueur' :key="player" class="divPlayer" style="margin: auto ; height:100% ; border-style: solid ; border-color: gray ; float: left ; ">
                     {{player}}
                 </div>
             </div>
             <div id="envoie_des_mots" style="margin: auto ; height:40% ; width: 100% ; display: none">
                 <div style="margin: auto ; height:40% ; width: 100%"></div>
                 <p>Mot avec <strong>{{chaine}}</strong></p>
-                <form @submit.prevent="entrer_mot(mot)">
+                <form v-bind:style="turn?'display: inline':'display: none'" @submit.prevent="entrer_mot(mot)">
                     <div id = "mot_joueur" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
                     <v-text-field v-model = "mot" @input="seeChange"></v-text-field>
                     </div>
@@ -90,13 +90,14 @@ export default {
         
       },
       entrer_mot(mot){
-          console.log(mot)
-          console.log(this.token)
+          this.salon = this.$route.params.id;
           this.logMot.push(this.token)
           this.mot = mot
           this.logMot.push(this.mot)
+          this.logChange.push(this.salon)
+          this.logChange.push('')
           socket.emit('entrer_mot',this.logMot)
-          socket.emit('change', '')
+          socket.emit('change', this.logChange)
           this.mot = ""
           this.logMot = []
       },
@@ -112,8 +113,6 @@ export default {
 
   mounted: function(){
     let self = this;
-    console.log(sessionStorage.getItem('autosave'));
-    console.log(this.$route.params.id);
     if (sessionStorage.getItem("autosave") == null){
       document.location.href='/'
     }
@@ -149,7 +148,6 @@ export default {
         document.getElementById('envoie_des_mots').style.display = 'block'
         document.getElementById('compteur').style.display = 'block'
     })
-    console.log(self.token)
     socket.on('trouve_mot', function(data){
       if (data[0]  == self.token){
         self.turn = true
@@ -158,8 +156,14 @@ export default {
         self.turn = false
       }
       self.chaine = data[1]
+      var elm = document.getElementsByClassName('divPlayer')
+        for(var j = 0 ; j < elm.length; j++)
+        {
+            elm[j].style.borderColor = "grey"
+        }
+    document.getElementById(data[0]).style.borderColor = "green"
     })
-    document.getElementById(data[0]).style.border-color="green"
+
     socket.on('encore', function(data){
       
     })

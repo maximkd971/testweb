@@ -83,7 +83,7 @@ io.sockets.on('connection', function (socket, pseudo) {
         listeSalons.push(salon);
         fs.writeFile('data/rooms.txt', fileContentRooms(listeSalons), function(err){});
         socket.emit('redirect_salon', salon);
-        console.log(socket.pseudo + ' vient de créer le salon ' + salon);
+        console.log(pseudo + ' vient de créer le salon ' + salon);
     });
 
 
@@ -100,12 +100,11 @@ io.sockets.on('connection', function (socket, pseudo) {
         console.log(jeux[pseudo[1]].listeJoueur);
 
         for(var i = 0 ; i < jeux[pseudo[1]].listeSocket.length -1 ; i++){
-            console.log('TEST');
             jeux[pseudo[1]].listeSocket[i].emit('liste_joueur', [[jeux[pseudo[1]].listeJoueur[jeux[pseudo[1]].listeJoueur.length -1]]]);
         }
         console.log(jeux[pseudo[1]].listeJoueur);
         socket.emit('liste_joueur', [jeux[pseudo[1]].listeJoueur]);
-        console.log(socket.pseudo + ' vient de rentrer dans le salon ' + pseudo[1]);
+        console.log(pseudo[0] + ' vient de rentrer dans le salon ' + pseudo[1]);
     });
 
     // ON debut_jeu
@@ -116,7 +115,7 @@ io.sockets.on('connection', function (socket, pseudo) {
         // Supprimer du fichier
         for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
             jeux[salon].lettre = 'A'; // TODO : lettre aléatoire
-            jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1]], 'A'); // TODO : lettre aléatoire
+            jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1], 'A']); // TODO : lettre aléatoire
         }
         console.log('Partie lancé dans le salon ' + salon);
     });
@@ -134,7 +133,7 @@ io.sockets.on('connection', function (socket, pseudo) {
              jeux[salon].tour++;
              for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
                 jeux[salon].lettre = 'B'; // TODO : lettre aléatoire
-                jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1]], 'B'); // TODO : lettre aléatoire
+                jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1], 'B']); // TODO : lettre aléatoire
             }
          } else {
              for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){

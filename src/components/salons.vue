@@ -39,7 +39,7 @@
 
 <script>
 import io from 'socket.io-client';
-var socket = io('127.0.0.1:3535');
+var socket = io('192.168.1.73:3535');
 export default {
   name: 'game',
   data: () => ({
@@ -66,7 +66,9 @@ export default {
     let self = this;
     console.log(sessionStorage.getItem('autosave'));
     console.log(this.$route.params.id);
-
+    if (sessionStorage.getItem("autosave") == null){
+      document.location.href='/'
+    }
     self.pseudo = sessionStorage.getItem('autosave');
     self.salon = this.$route.params.id;
     self.logEnterRoom.push(self.pseudo);

@@ -96,6 +96,7 @@ export default {
           this.mot = mot
           this.logMot.push(this.mot)
           socket.emit('entrer_mot',this.logMot)
+          socket.emit('change', '')
           this.mot = ""
           this.logMot = []
       },
@@ -158,7 +159,7 @@ export default {
       }
       self.chaine = data[1]
     })
-
+    document.getElementById(data[0]).style.border-color="green"
     socket.on('encore', function(data){
       
     })

@@ -127,7 +127,7 @@ io.sockets.on('connection', function (socket, pseudo) {
         // EMIT trouve_mot
         // Tableau. Premier élément = token du joueur a qui c'est le tour, deuxième élément : Le début du mot à trouver (la lettre / la chaine de mots)
     socket.on('debut_jeu', function(salon){
-        // Supprimer du fichier
+        deleteSalon(salon);
         var newLettre = lettreAleatoire();
              jeux[salon].lettre = newLettre;
         console.log(newLettre);
@@ -194,6 +194,17 @@ var fileContentRooms = function(salon){
 
 var lettreAleatoire = function(){
     return listeChaine[Math.floor(Math.random() * (81056 - 1) + 1)];
+};
+
+var deleteSalon = function(salon){
+  for( var i = 0; i < listeSalons.length; i++){
+   if ( listeSalons[i] === salon) {
+     listeSalons.splice(i, 1);
+   }
+
+}
+    fs.writeFile('data/rooms.txt', fileContentRooms(listeSalons), function(err){});
+
 };
 
 var inDico = function(mot){

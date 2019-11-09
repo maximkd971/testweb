@@ -136,7 +136,8 @@ io.sockets.on('connection', function (socket, pseudo) {
     socket.on('change', function(data){
         // Supprimer du fichier
         salon = data[0];
-        mot = data[1]
+        mot = data[1];
+        console.log(mot);
         for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
             jeux[salon].listeSocket[i].emit('broadcast', mot); // TODO : lettre aléatoire
         }

@@ -85,10 +85,8 @@ export default {
   methods:{
       lancement_partie(){
         this.salon = this.$route.params.id;
-        socket.emit("debut_jeu", this.salon)
-        document.getElementById('bouton_lancement').style.display = 'none'
-        document.getElementById('envoie_des_mots').style.display = 'block'
-        document.getElementById('compteur').style.display = 'block'
+        socket.emit('debut_jeu', this.salon)
+        
       },
       entrer_mot(mot){
           console.log(mot)
@@ -101,11 +99,11 @@ export default {
       },
       //Voir les mots entré en direct par le user
       seeChange : function(){
+        console.log(this.mot)
         this.salon = this.$route.params.id
         this.logChange.push(this.salon)
         this.logChange.push(this.mot)
         socket.emit('change', this.logChange);
-        this.mot = ''
       },
   },
 
@@ -141,10 +139,13 @@ export default {
             {
                elm[j].style.width = size + '%';
             }
-        }, 500)
-            
-        
-        
+        }, 500) 
+    })
+      
+    socket.on('lancement_partie', function(){
+        document.getElementById('bouton_lancement').style.display = 'none'
+        document.getElementById('envoie_des_mots').style.display = 'block'
+        document.getElementById('compteur').style.display = 'block'
     })
     console.log(self.token)
     socket.on('trouve_mot', function(data){

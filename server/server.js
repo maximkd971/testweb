@@ -37,12 +37,8 @@ account.on('line', (line) => {
     accountList.push(line.split(';'));
 });
 
-account.on('close', () => {
-    for(elt in accountList){
-        console.log(accountList[elt]);
-    }
-});
-
+fs.unlinkSync('data/rooms.txt');
+console.log('Serveur lancé !');
 
 
 
@@ -52,20 +48,20 @@ io.sockets.on('connection', function (socket, pseudo) {
         // EMIT liste_salon
         // Tableau de String
     socket.on('connexion', function(logInfo){
-        console.log('Tentative de connexion : ' + logInfo[0] + ' - ' + logInfo[1]);
+
         for(elt in accountList){
-            console.log()
+
             if(logInfo[0] === accountList[elt][0] && logInfo[1] === accountList[elt][1]){
                 notFound = false;
-                console.log(listeSalons);
                 socket.emit('connexion_success', 'Succes de la connexion');
                 console.log('Connexion de ' + logInfo[0]);
+                socket.pseudo = logInfo[0];
             }
 
         }
         if (notFound == true){
             socket.emit('connexion_failed', 'Echec de la connexion');
-            console.log('Echec de la connexion de ' + logInfo[0]);
+            console.log('Tentative de connexion de ' + logInfo[0] § ' - ' + logInfo[1]);
         }
         notFound = true;
         
@@ -80,28 +76,37 @@ io.sockets.on('connection', function (socket, pseudo) {
 
     // ON nouveau_salon
     // Comme entrer_salon mais avec ajout du salon dans le fichier
-    socket.on('nouveau_salon', function(pseudo, salon){
+    socket.on('nouveau_salon', function(data){
+        var pseudo = data[0];
+        var salon = data[1];
         // Ecrire le salon dans le fichier
-       //jeux[salon] = {listeJoueur: [pseudo+'_'+salon+'_1'], tour: 1, timer: 0, listeSocket: [socket]};
-        //socket.emit('liste_joueur', [jeux[salon].listeJoueur, pseudo+'_'+salon+'_1']);
-        socket.emit();
+       jeux[salon] = {listeJoueur: [], tour: 0, timer: 0, listeSocket: []};
+        listeSalons.push(salon);
+        fs.writeFile('data/rooms.txt', fileContentRooms(listeSalons), function(err){});
+        socket.emit('redirect_salon', salon);
+        console.log(socket.pseudo + ' vient de créer le salon ' + salon);
     });
+
 
     // ON entrer_salon
     // Envoi d'un tableau avec pseudo et nom du salon
         // EMIT liste_joueur
         // Tableau avec tous les TOKENS
     socket.on('entrer_salon', function(pseudo){
-        
-        jeux[pseudo[1]] = {listeJoueur: [pseudo[0]+'_'+pseudo[1]+'_1'], tour: 1, timer: 0, listeSocket: [socket]};
         jeux[pseudo[1]].tour++;
         jeux[pseudo[1]].listeJoueur.push(pseudo[0]+'_'+pseudo[1]+'_'+jeux[pseudo[1]].tour);
         jeux[pseudo[1]].listeSocket.push(socket);
 
-        for(var i = 0 ; i < jeux[pseudo[1]].listeSocket.length ; i++){
-            jeux[pseudo[1]].listeSocket[i].emit('liste_joueur', [jeux[pseudo[1]].listeJoueur, pseudo[0]+'_'+pseudo[1]+'_'+jeux[pseudo[1]].tour]);
+
+        console.log(jeux[pseudo[1]].listeJoueur);
+
+        for(var i = 0 ; i < jeux[pseudo[1]].listeSocket.length -1 ; i++){
+            console.log('TEST');
+            jeux[pseudo[1]].listeSocket[i].emit('liste_joueur', [[jeux[pseudo[1]].listeJoueur[jeux[pseudo[1]].listeJoueur.length -1]]]);
         }
         console.log(jeux[pseudo[1]].listeJoueur);
+        socket.emit('liste_joueur', [jeux[pseudo[1]].listeJoueur]);
+        console.log(socket.pseudo + ' vient de rentrer dans le salon ' + pseudo[1]);
     });
 
     // ON debut_jeu
@@ -114,6 +119,7 @@ io.sockets.on('connection', function (socket, pseudo) {
             jeux[salon].lettre = 'A'; // TODO : lettre aléatoire
             jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1]], 'A'); // TODO : lettre aléatoire
         }
+        console.log('Partie lancé dans le salon ' + salon);
     });
 
 
@@ -138,5 +144,13 @@ io.sockets.on('connection', function (socket, pseudo) {
          }
     });
 });
+
+var fileContentRooms = function(salon){
+    var ret = '';
+    for(var elt in salon){
+        ret+=listeSalons[elt]+'\n';
+    }
+    return ret;
+};
 
 server.listen(3535);

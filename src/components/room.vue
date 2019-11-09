@@ -90,7 +90,7 @@
 
 <script>
 import io from 'socket.io-client';
-var socket = io('10.239.161.57:3535');
+var socket = io('127.0.0.1:3535');
 export default {
   name: 'game',
   props: {
@@ -144,6 +144,9 @@ export default {
         for(var i = 0; i < data.length; i++){
           self.items.push(data[i]);
         }
+    })
+    socket.on('redirect_salon', function(salon){
+        document.location.href='/salons/'+salon
     })
   }
 }

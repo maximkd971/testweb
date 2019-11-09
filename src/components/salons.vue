@@ -17,7 +17,8 @@
                         <v-img src="../assets/bombe_1.png" aspect-ratio="2" height="200" width="300"></v-img>
                     </div>
                     <div style="float: left ; width: 40%">
-                        compteur
+                        <div style="margin: auto ; height:14vh ; width: 100%"></div>
+                        <p><FONT size="50">10,00</FONT></p>
                     </div>
                     <div style="float: left ; width: 30%">
                         <v-img src="../assets/bombe_1.png" aspect-ratio="2" height="200" width="300"></v-img>
@@ -26,7 +27,7 @@
                 <p><v-btn id="bouton_lancement" x-small v-on:click="lancement_partie" rounded width="33%" height="55" color="#CDC5C4">Lancer la partie</v-btn></p>
             </div>
             <div style="margin: auto ; height:20% ; width: 100%">
-                <div v-for='player in liste_joueur' :key="player" class="divPlayer" style="margin: auto ; height:100% ; border-style: solid ; border-color: gray ; float: left">
+                <div v-for='player in liste_joueur' :key="player" class="divPlayer" style="margin: auto ; height:100% ; border-style: solid ; border-color: gray ; float: left ; border-right-style: none ; ">
                     {{player}}
                 </div>
             </div>
@@ -45,7 +46,7 @@
 
         <div style="position:absolute ; top:0 ; right:0 ; text-align:center ; float:right ; height:100% ; width:15% ; border-left-style: solid ; border-color: gray">
             <div>
-                <div id="messages" style="margin: auto ; min-height:80vh ; width: 100% ; border-style: solid ; border-color: gray ; overflow:auto;">
+                <div id="messages" style="margin: auto ; min-height:80vh ; width: 100% ; border-style: solid ; border-left-style: none ;border-color: gray ; overflow:auto;">
 
                 </div>
 

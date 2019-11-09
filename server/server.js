@@ -137,7 +137,6 @@ io.sockets.on('connection', function (socket, pseudo) {
         // Supprimer du fichier
         salon = data[0];
         mot = data[1];
-        console.log(mot);
         for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
             jeux[salon].listeSocket[i].emit('broadcast', mot); // TODO : lettre aléatoire
         }
@@ -163,7 +162,7 @@ io.sockets.on('connection', function (socket, pseudo) {
              jeux[salon].lettre = newLettre;
              console.log(newLettre);
              for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
-                jeux[salon].lettre = 'B'; // TODO : lettre aléatoire
+                jeux[salon].lettre = newLettre;
                 jeux[salon].listeSocket[i].emit('trouve_mot', [jeux[salon].listeJoueur[jeux[salon].tour-1], newLettre]); // TODO : lettre aléatoire
             }
          } else {

@@ -2,7 +2,7 @@
     <div id="content">
         <div style="position:absolute ; margin:auto; text-align:center ; float:left ;  height:100%; width:15%; border-right-style: solid ; border-color: gray">
             <div>
-                <p><v-btn x-small v-on:click="quitter" rounded width="100%" height="55" :to="{name:'room'}" color="#CDC5C4">Quitter</v-btn></p>
+                <p><v-btn x-small rounded width="100%" height="55" :to="{name:'room'}" color="#CDC5C4">Quitter</v-btn></p>
             </div>
             <br>
             <div id="scores" style="margin: auto ; height:80vh ; width: 100% ; border-style: solid ; border-color: gray ; overflow:auto ; border-right-style: none ; border-bottom-style: none">
@@ -12,7 +12,17 @@
 
         <div style="margin:auto; text-align:center ;  height:100vh; width:70%;">
             <div style="margin: auto ; height:40% ; width: 100%">
-                <div></div>
+                <div id="compteur" style="display: none ">
+                    <div style="float: left ; width: 30%">
+                        <v-img src="../assets/bombe_1.png" aspect-ratio="2" height="200" width="300"></v-img>
+                    </div>
+                    <div style="float: left ; width: 40%">
+                        compteur
+                    </div>
+                    <div style="float: left ; width: 30%">
+                        <v-img src="../assets/bombe_1.png" aspect-ratio="2" height="200" width="300"></v-img>
+                    </div>
+                </div>
                 <p><v-btn id="bouton_lancement" x-small v-on:click="lancement_partie" rounded width="33%" height="55" color="#CDC5C4">Lancer la partie</v-btn></p>
             </div>
             <div style="margin: auto ; height:20% ; width: 100%">
@@ -22,7 +32,7 @@
             </div>
             <div id="envoie_des_mots" style="margin: auto ; height:40% ; width: 100% ; display: none">
                 <div style="margin: auto ; height:40% ; width: 100%"></div>
-                <p>Mot avec {{chaine}}</p>
+                <p>Mot avec <strong>{{chaine}}</strong></p>
                 <form @submit.prevent="entrer_mot(mot)">
                     <div id = "mot_joueur" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
                     <v-text-field v-model = "mot" @input="seeChange"></v-text-field>
@@ -78,9 +88,7 @@ export default {
         socket.emit("debut_jeu", this.salon)
         document.getElementById('bouton_lancement').style.display = 'none'
         document.getElementById('envoie_des_mots').style.display = 'block'
-      },
-      quitter(){
-          console.log("lancement salon")
+        document.getElementById('compteur').style.display = 'block'
       },
       entrer_mot(mot){
           console.log(mot)

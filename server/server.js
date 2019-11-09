@@ -120,6 +120,19 @@ io.sockets.on('connection', function (socket, pseudo) {
         console.log('Partie lancé dans le salon ' + salon);
     });
 
+     // ON debut_jeu
+    // Réception du nom du salon. Lance la partie. Supprime le salon du fichier.
+        // EMIT trouve_mot
+        // Tableau. Premier élément = token du joueur a qui c'est le tour, deuxième élément : Le début du mot à trouver (la lettre / la chaine de mots)
+    socket.on('change', function(salon, mot){
+        // Supprimer du fichier
+        salon = data[0];
+        mot = data[1]
+        for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
+            jeux[salon].listeSocket[i].emit('broadcast', mot); // TODO : lettre aléatoire
+        }
+    });
+
 
     // ON entrer_mot
     // Tableau avec premier élément = Nom du salon, deuxième mot entré

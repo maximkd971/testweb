@@ -11,13 +11,20 @@
         </div>
 
         <div style="margin:auto; text-align:center ;  height:100vh; width:70%;">
-            <div style="margin: auto ; height:20% ; width: 100%"></div>
+            <div style="margin: auto ; height:20% ; width: 100%">
+                <p><v-btn x-small v-on:click="lancer_partie" rounded width="33%" height="55" color="#CDC5C4">Lancer la partie</v-btn></p>
+            </div>
             <div style="margin: auto ; height:60% ; width: 100%">
                 <div v-for='player in liste_joueur' :key="player" class="divPlayer" style="margin: auto ; height:100% ; border-style: solid ; border-color: gray ; float: left">
                     {{player}}
                 </div>
             </div>
-            <div style="margin: auto ; height:20% ; width: 100%"></div>
+            <div style="margin: auto ; height:20% ; width: 100%">
+                <p>Mot avec {{chaine}}</p>
+                <div id = "mot_joueur" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
+                    <v-text-field v-model = "mot"></v-text-field>
+                </div>
+            </div>
 
         </div>
 
@@ -28,10 +35,10 @@
                 </div>
 
                 <div id="message_a_envoyer" style="width: 100% ; margin:auto ; text-align:center ; margin-bottom: 55;">
-                    <v-text-field label="Votre message"></v-text-field>
+                    <v-text-field v-if="turn" label="Votre message"></v-text-field>
                 </div>
 
-                <p><v-btn x-small v-on:click="envoyer_message" rounded width="100%" height="55" color="#CDC5C4">Envoyer un message</v-btn></p>
+                <p><v-btn x-small v-if="turn" v-on:click="envoyer_message" rounded width="100%" height="55" color="#CDC5C4">Envoyer un message</v-btn></p>
             </div>
         </div>
     </div>
@@ -43,10 +50,13 @@ var socket = io('192.168.1.73:3535');
 export default {
   name: 'game',
   data: () => ({
+    mot : '',
     pseudo : '',
-    saloin : '',
+    salon : '',
     token :'',
     size :'',
+    chaine : '',
+    turn : false,
     liste_joueur : [],
     logEnterRoom : [],
   }),
@@ -54,6 +64,10 @@ export default {
     msg: String
   },
   methods:{
+      lancement_partie(){
+        this.salon = this.$route.params.id;
+        socket.emit("debut_jeu", salon)
+      }
       quitter(){
           console.log("lancement salon")
       },
@@ -66,7 +80,9 @@ export default {
     let self = this;
     console.log(sessionStorage.getItem('autosave'));
     console.log(this.$route.params.id);
-
+    if (sessionStorage.getItem("autosave") == null){
+      document.location.href='/'
+    }
     self.pseudo = sessionStorage.getItem('autosave');
     self.salon = this.$route.params.id;
     self.logEnterRoom.push(self.pseudo);
@@ -93,6 +109,16 @@ export default {
             
         
         
+    })
+
+    socket.on('trouve_mot', function(data){
+      if (data[0]  == self.token){
+        turn = true
+      }
+      else {
+        turn = false
+      }
+      self.chaine = data[1]
     })
   }
 }

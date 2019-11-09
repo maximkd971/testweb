@@ -19,6 +19,8 @@ var salons = [];
 
 var accountList = [];
 
+var listeMot = [];
+
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -33,6 +35,10 @@ const char = readline.createInterface({
    input: fs.createReadStream('data/referentiel_chaines.txt')
 });
 
+const dico = readline.createInterface({
+    input: fs.createReadStream('data/liste_francais.txt')
+});
+
 // Each new line emits an event - every time the stream receives \r, \n, or \r\n
 rl.on('line', (line) => {
     listeSalons.push(line);
@@ -44,6 +50,10 @@ account.on('line', (line) => {
 
 char.on('line', (line) => {
    listeChaine.push(line);
+});
+
+dico.on('line', (line) => {
+    listeMot.push(line);
 });
 
 console.log('Serveur lancé !');
@@ -186,8 +196,13 @@ var lettreAleatoire = function(){
     return listeChaine[Math.floor(Math.random() * (81056 - 1) + 1)];
 };
 
-var inDico = function(){
-    return true;
+var inDico = function(mot){
+    for(var i = 0 ; i < listeMot.length ; i++){
+        if(mot.toUpperCase() == listeMot[i].toUpperCase()){
+            return true;
+        }
+    }
+    return false;
 };
 
 server.listen(3535);

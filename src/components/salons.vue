@@ -95,6 +95,7 @@ export default {
           this.mot = mot
           this.logMot.push(this.mot)
           socket.emit('entrer_mot',this.logMot)
+          socket.emit('change', '')
           this.mot = ""
           this.logMot = []
       },
@@ -104,7 +105,7 @@ export default {
         this.logChange.push(this.salon)
         this.logChange.push(this.mot)
         socket.emit('change', this.logChange);
-        this.logChange = [],
+        this.logChange = []
       },
   },
 

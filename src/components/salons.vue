@@ -11,15 +11,16 @@
         </div>
 
         <div style="margin:auto; text-align:center ;  height:100vh; width:70%;">
-            <div style="margin: auto ; height:20% ; width: 100%">
-                <p><v-btn x-small v-on:click="lancer_partie" rounded width="33%" height="55" color="#CDC5C4">Lancer la partie</v-btn></p>
+            <div style="margin: auto ; height:40% ; width: 100%">
+                <p><v-btn id="bouton_lancement" x-small v-on:click="lancement_partie" rounded width="33%" height="55" color="#CDC5C4">Lancer la partie</v-btn></p>
             </div>
-            <div style="margin: auto ; height:60% ; width: 100%">
+            <div style="margin: auto ; height:20% ; width: 100%">
                 <div v-for='player in liste_joueur' :key="player" class="divPlayer" style="margin: auto ; height:100% ; border-style: solid ; border-color: gray ; float: left">
                     {{player}}
                 </div>
             </div>
-            <div style="margin: auto ; height:20% ; width: 100%">
+            <div style="margin: auto ; height:40% ; width: 100%">
+                <div style="margin: auto ; height:40% ; width: 100%"></div>
                 <p>Mot avec {{chaine}}</p>
                 <div id = "mot_joueur" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
                     <v-text-field v-model = "mot"></v-text-field>
@@ -66,8 +67,9 @@ export default {
   methods:{
       lancement_partie(){
         this.salon = this.$route.params.id;
-        socket.emit("debut_jeu", salon)
-      }
+        socket.emit("debut_jeu", this.salon)
+        document.getElementById('bouton_lancement').style.display = 'none'
+      },
       quitter(){
           console.log("lancement salon")
       },
@@ -110,10 +112,10 @@ export default {
 
     socket.on('trouve_mot', function(data){
       if (data[0]  == self.token){
-        turn = true
+        self.turn = true
       }
       else {
-        turn = false
+        self.turn = false
       }
       self.chaine = data[1]
     })

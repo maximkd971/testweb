@@ -62,7 +62,7 @@
 
 <script>
 import io from 'socket.io-client';
-var socket = io('192.168.1.28:3535');
+var socket = io('192.168.1.21:3535');
 export default {
   name: 'game',
   data: () => ({
@@ -214,6 +214,14 @@ export default {
     socket.on('nouveau_message', function(message){
         var listeMessages = document.getElementById('messages')
         listeMessages.innerHTML = listeMessages.innerHTML + '<span style="left: 5px;">' + message + '</span><br />'
+    })
+      
+    socket.on('victoire', function(victorieux){
+        if(victorieux == self.token){
+            alert('Vous avez gagné !')
+        } else {
+            alert(victorieux.split('_')[0] + ' a gagné !')
+        }
     })
 
     socket.on('encore', function(){

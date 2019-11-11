@@ -25,19 +25,19 @@ var listeMot = [];
 const readline = require('readline');
 
 const rl = readline.createInterface({
-    input: fs.createReadStream('data/rooms.txt')
+    input: fs.createReadStream('server/data/rooms.txt')
 });
 
 const account = readline.createInterface({
-    input: fs.createReadStream('data/account.txt')
+    input: fs.createReadStream('server/data/account.txt')
 });
 
 const char = readline.createInterface({
-   input: fs.createReadStream('data/referentiel_chaines.txt')
+   input: fs.createReadStream('server/data/referentiel_chaines.txt')
 });
 
 const dico = readline.createInterface({
-    input: fs.createReadStream('data/liste_francais.txt')
+    input: fs.createReadStream('server/data/liste_francais.txt')
 });
 
 // Each new line emits an event - every time the stream receives \r, \n, or \r\n
@@ -102,7 +102,7 @@ io.sockets.on('connection', function (socket, pseudo) {
         // Ecrire le salon dans le fichier
        jeux[salon] = {listeJoueur: [], tour: 0, timer: 0, listeSocket: []};
         listeSalons.push(salon);
-        fs.writeFile('data/rooms.txt', fileContentRooms(listeSalons), function(err){});
+        fs.writeFile('server/data/rooms.txt', fileContentRooms(listeSalons), function(err){});
         socket.emit('redirect_salon', salon);
         console.log(pseudo + ' vient de créer le salon ' + salon);
     });
@@ -123,7 +123,7 @@ io.sockets.on('connection', function (socket, pseudo) {
         socket.emit('liste_joueur', [jeux[pseudo[1]].listeJoueur, pseudo[0]+'_'+pseudo[1]+'_'+jeux[pseudo[1]].tour]);
         console.log(pseudo[0] + ' vient de rentrer dans le salon ' + pseudo[1]);
 
-        fs.appendFile('data/messages/' + pseudo[1] + '.txt', pseudo[0] + ' vient de rentrer dans le salon\\n', 'utf8',  (err) => {});
+        fs.appendFile('server/data/messages/' + pseudo[1] + '.txt', pseudo[0] + ' vient de rentrer dans le salon\\n', 'utf8',  (err) => {});
 
 
 
@@ -224,7 +224,7 @@ var deleteSalon = function(salon){
    }
 
 }
-    fs.writeFile('data/rooms.txt', fileContentRooms(listeSalons), function(err){});
+    fs.writeFile('server/data/rooms.txt', fileContentRooms(listeSalons), function(err){});
 
 };
 
@@ -241,7 +241,7 @@ var messagerie = function(socket, salon){
     var messages = '';
 
     const listeMessage = readline.createInterface({
-        input: fs.createReadStream('data/messages/' + salon + '.txt')
+        input: fs.createReadStream('server/data/messages/' + salon + '.txt')
     });
 
     // Each new line emits an event - every time the stream receives \r, \n, or \r\n
@@ -267,7 +267,7 @@ var sendMessage = function(data){
     var socket = data[2];
         var message = '[' + formatDate(new Date()) + '] ' + token.split('_')[0] + ' : ' + contenu + '\\n';
 
-        fs.appendFile('data/messages/' + token.split('_')[1] + '.txt', message, 'utf8',  (err) => {});
+        fs.appendFile('server/data/messages/' + token.split('_')[1] + '.txt', message, 'utf8',  (err) => {});
 
         var salon = token.split('_')[1];
         for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){

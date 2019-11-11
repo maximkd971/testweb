@@ -222,6 +222,7 @@ export default {
         } else {
             alert(victorieux.split('_')[0] + ' a gagné !')
         }
+        document.location = '/room'
     })
 
     socket.on('encore', function(){

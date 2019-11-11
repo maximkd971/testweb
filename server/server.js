@@ -220,7 +220,9 @@ io.sockets.on('connection', function (socket, pseudo) {
                 jeux[salon].listeSocket[i].emit('victoire', victorieux);
             }
 
-            fs.unlink('server/data/messages/'+salon+'.txt')
+            fs.unlink('server/data/messages/'+salon+'.txt', () => {});
+            jeux[salon].delete;
+
         }
     });
 });

@@ -62,7 +62,7 @@
 
 <script>
 import io from 'socket.io-client';
-var socket = io('192.168.1.80:3535');
+var socket = io('192.168.1.28:3535');
 export default {
   name: 'game',
   data: () => ({
@@ -76,7 +76,7 @@ export default {
     changing : '',
     player_en_cours : '',
     timer: null,
-    totalTime: (10),
+    totalTime: (100),
     turn : false,
     liste_joueur : [],
     logEnterRoom : [],
@@ -123,18 +123,18 @@ export default {
        startTimer: function() {
           clearInterval(this.timer)
           this.timer = null
-          if (this.totalTime <=5){
-                  this.totalTime = 5
+          if (this.totalTime <=50){
+                  this.totalTime = 50
                   this.timer = null
           }
-          this.timer = setInterval(() => this.countdown(), 1000);
+          this.timer = setInterval(() => this.countdown(), 100);
         },
         countdown: function() {
-          if(this.totalTime >= 1){
+          if(this.totalTime > 0){
             this.totalTime--;
           }
           else{
-            this.totalTime = 10
+            this.totalTime = 100
             clearInterval(this.timer)
             this.timer = null
             socket.emit('boom',this.player_en_cours)
@@ -145,8 +145,8 @@ export default {
 
   computed:{
     seconds: function() {
-      const seconds = this.totalTime;
-      return seconds;
+      const seconds = this.totalTime/10;
+      return seconds.toFixed(1);
     }
   },
   mounted: function(){

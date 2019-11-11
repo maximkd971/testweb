@@ -25,7 +25,7 @@ const router = new VueRouter({
 
 Vue.use(new VueSocketIO({
 	debug:true,
-	connection:'http://127.0.0.1:3535'
+	connection:'http://192.168.1.80:3535'
 }))
 
 new Vue({

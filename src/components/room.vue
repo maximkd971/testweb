@@ -90,7 +90,7 @@
 
 <script>
 import io from 'socket.io-client';
-var socket = io('127.0.0.1:3535');
+var socket = io('192.168.1.80:3535');
 export default {
   name: 'game',
   props: {

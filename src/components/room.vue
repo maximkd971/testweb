@@ -30,13 +30,14 @@
                             <v-list-item
                                 v-for="(item, i) in items"
                                 :key="i"
+                                :to="{name:'post', params:{id:item}}"
                             >
                             <v-list-item-icon>
                                 <v-icon v-text="item.icon"></v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                                <v-list-item-title v-text="item.text"></v-list-item-title>
-                            </v-list-item-content>
+                                <v-list-item-title v-text="item" ></v-list-item-title>
+                            </v-list-item-content> 
                             </v-list-item>
                         </v-list-item-group>
                     </v-list>
@@ -44,11 +45,11 @@
             </div>
             
             <div id="nom_salon" style="width: 30% ; margin:auto ; text-align:center ; margin-bottom: 55;">
-                <v-text-field label="Nom du salon"></v-text-field>
+                <v-text-field id = "nom_salon" label="Nom du salon" v-model = "nom_salon"></v-text-field>
             </div>
 
             <div id="bouton_lancement_salon" style=" text-align:center ;">
-                <p><v-btn x-small v-on:click="lancement_salon" rounded width="22%" height="55" color="#CDC5C4">Lancer un salon</v-btn></p>
+                <p><v-btn x-small v-on:click="newRoom(nom_salon)" rounded width="22%" height="55" color="#CDC5C4">Lancer un salon</v-btn></p>
             </div>
         
         </div>
@@ -88,6 +89,8 @@
 </template>
 
 <script>
+import io from 'socket.io-client';
+var socket = io('127.0.0.1:3535');
 export default {
   name: 'game',
   props: {
@@ -96,19 +99,12 @@ export default {
   data: () => ({
       item: 1,
       item_friend: 1,
-      items: [
-        { text: 'Le salon des culs'},
-        { text: 'gros dep'},
-        { text: 'enculés'},
-        { text: 'salopards'},
-      ],
-      items_friends: [
-        { text: 'Florian'},
-        { text: 'Bastien'},
-        { text: 'Maxim'},
-        { text: 'Sandrine'},
-        { text: 'PD'},
-      ],
+      items: [],
+      items_friends: [],
+      emptyRoom : false,
+      logRoom :[],
+      pseudo : '',
+      nom_salon:''
     }),
   methods:{
       lancement_salon(){
@@ -120,6 +116,38 @@ export default {
       redirection(lien){
         document.location.href=lien
       },
+
+      newRoom : function(roomName){
+        if(roomName != ''){
+          this.emptyRoom = false;
+          this.pseudo = sessionStorage.getItem('autosave');
+          this.logRoom.push(this.pseudo);
+          this.logRoom.push(roomName);
+          socket.emit('nouveau_salon', this.logRoom);
+          this.pseudo = '';
+          this.logRoom = [];
+        }
+        else{
+          this.emptyRoom = true;
+        }
+      },
+  },
+
+  mounted : function(){
+    let self = this
+    console.log(sessionStorage.getItem('autosave'))
+    if (sessionStorage.getItem("autosave") == null){
+      document.location.href='/'
+    }
+    socket.emit('acces_room','Entre dans la room')
+    socket.on('liste_salon', function(data){
+        for(var i = 0; i < data.length; i++){
+          self.items.push(data[i]);
+        }
+    })
+    socket.on('redirect_salon', function(salon){
+        document.location.href='/salons/'+salon
+    })
   }
 }
 </script>

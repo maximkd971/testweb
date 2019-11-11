@@ -100,7 +100,7 @@ io.sockets.on('connection', function (socket, pseudo) {
         var pseudo = data[0];
         var salon = data[1];
         // Ecrire le salon dans le fichier
-       jeux[salon] = {listeJoueur: [], tour: 0, timer: 0, listeSocket: []};
+       jeux[salon] = {listeJoueur: [], tour: 0, timer: 0, listeSocket: [], listeMort: []};
         listeSalons.push(salon);
         fs.writeFile('server/data/rooms.txt', fileContentRooms(listeSalons), function(err){});
         socket.emit('redirect_salon', salon);
@@ -202,6 +202,26 @@ io.sockets.on('connection', function (socket, pseudo) {
     socket.on('nouveau_message', function(data){
         data.push(socket);
         sendMessage(data);
+    });
+
+    socket.on('boom', function(token){
+        var salon = token.split('_')[1];
+        jeux[salon].listeMort.push(token);
+
+        if(jeux[salon].listeMort.length == jeux[salon].listeJoueur.length-1){
+            var victorieux = null;
+            for (var i = 0 ; i < jeux[salon].listeJoueur.length ; i++){
+                if(!jeux[salon].listeMort.includes(jeux[salon].listeJoueur[i])){
+                    victorieux = jeux[salon].listeJoueur[i];
+                }
+            }
+
+            for(var i = 0 ; i < jeux[salon].listeJoueur.length ; i++){
+                jeux[salon].listeSocket[i].emit('victoire', victorieux);
+            }
+
+            fs.unlink('server/data/messages/'+salon+'.txt')
+        }
     });
 });
 

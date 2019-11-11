@@ -18,7 +18,7 @@
                     </div>
                     <div style="float: left ; width: 40%">
                         <div style="margin: auto ; height:14vh ; width: 100%"></div>
-                        <p><FONT size="50">10,00</FONT></p>
+                        <p><FONT size="50">{{seconds}}</FONT></p>
                     </div>
                     <div style="float: left ; width: 30%">
                         <v-img src="../assets/bombe_1.png" aspect-ratio="2" height="200" width="300"></v-img>
@@ -74,6 +74,9 @@ export default {
     chaine : '',
     message : '',
     changing : '',
+    player_en_cours : '',
+    timer: null,
+    totalTime: (10),
     turn : false,
     liste_joueur : [],
     logEnterRoom : [],
@@ -116,9 +119,36 @@ export default {
           this.logMessage.push(message)
           this.message = ''
           socket.emit('nouveau_message', this.logMessage)
-      }
+      },
+       startTimer: function() {
+          clearInterval(this.timer)
+          this.timer = null
+          if (this.totalTime <=5){
+                  this.totalTime = 5
+                  this.timer = null
+          }
+          this.timer = setInterval(() => this.countdown(), 1000);
+        },
+        countdown: function() {
+          if(this.totalTime >= 1){
+            this.totalTime--;
+          }
+          else{
+            this.totalTime = 10
+            clearInterval(this.timer)
+            this.timer = null
+            socket.emit('boom',this.player_en_cours)
+            document.getElementById(this.player_en_cours).style.borderColor = "red"
+          }
+        }
   },
 
+  computed:{
+    seconds: function() {
+      const seconds = this.totalTime;
+      return seconds;
+    }
+  },
   mounted: function(){
     let self = this;
     if (sessionStorage.getItem("autosave") == null){
@@ -157,6 +187,7 @@ export default {
         document.getElementById('compteur').style.display = 'block'
     })
     socket.on('trouve_mot', function(data){
+      self.startTimer()
       if (data[0]  == self.token){
         self.turn = true
       }
@@ -169,6 +200,7 @@ export default {
         {
             elm[j].style.borderColor = "grey"
         }
+        self.player_en_cours = data[0]
         document.getElementById(data[0]).style.borderColor = "green"
     })
       

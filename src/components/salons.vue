@@ -47,14 +47,14 @@
         <div style="position:absolute ; top:0 ; right:0 ; text-align:center ; float:right ; height:100% ; width:15% ; border-left-style: solid ; border-color: gray">
             <div>
                 <div id="messages" style="margin: auto ; min-height:80vh ; width: 100% ; border-style: solid ; border-left-style: none ;border-color: gray ; overflow:auto;">
-
+                    
                 </div>
 
                 <div id="message_a_envoyer" style="width: 100% ; margin:auto ; text-align:center ; margin-bottom: 55;">
-                    <v-text-field v-if="turn" label="Votre message" v-model = "message"></v-text-field>
+                    <v-text-field label="Votre message" v-model = "message"></v-text-field>
                 </div>
 
-                <p><v-btn x-small v-if="turn" v-on:click="entrer_mot(message)" rounded width="100%" height="55" color="#CDC5C4">Envoyer un message</v-btn></p>
+                <p><v-btn x-small v-on:click="entrer_message(message)" rounded width="100%" height="55" color="#CDC5C4">Envoyer un message</v-btn></p>
             </div>
         </div>
     </div>
@@ -62,7 +62,7 @@
 
 <script>
 import io from 'socket.io-client';
-var socket = io('192.168.1.73:3535');
+var socket = io('127.0.0.1:3535');
 export default {
   name: 'game',
   data: () => ({
@@ -79,6 +79,7 @@ export default {
     logEnterRoom : [],
     logMot :[],
     logChange :[],
+    logMessage: []
   }),
   props: {
     msg: String
@@ -106,9 +107,16 @@ export default {
         this.salon = this.$route.params.id
         this.logChange.push(this.salon)
         this.logChange.push(this.mot)
-        socket.emit('change', this.logChange);
+        socket.emit('change', this.logChange)
         this.logChange = []
       },
+      entrer_message: function(message){
+          this.logMessage = []
+          this.logMessage.push(this.token)
+          this.logMessage.push(message)
+          this.message = ''
+          socket.emit('nouveau_message', this.logMessage)
+      }
   },
 
   mounted: function(){
@@ -161,10 +169,22 @@ export default {
         {
             elm[j].style.borderColor = "grey"
         }
-    document.getElementById(data[0]).style.borderColor = "green"
+        document.getElementById(data[0]).style.borderColor = "green"
+    })
+      
+    socket.on('messagerie', function(messages){
+        var listeMessages = document.getElementById('messages')
+        for(var i = 0 ; i < messages.length-1 ; i++){
+            listeMessages.innerHTML = listeMessages.innerHTML + '<span style="left: 5px;">' + messages[i] + '</span><br />'
+        }
+    })
+      
+    socket.on('nouveau_message', function(message){
+        var listeMessages = document.getElementById('messages')
+        listeMessages.innerHTML = listeMessages.innerHTML + '<span style="left: 5px;">' + message + '</span><br />'
     })
 
-    socket.on('encore', function(data){
+    socket.on('encore', function(){
       
     })
   }

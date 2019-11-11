@@ -120,6 +120,20 @@ io.sockets.on('connection', function (socket, pseudo) {
         }
         socket.emit('liste_joueur', [jeux[pseudo[1]].listeJoueur, pseudo[0]+'_'+pseudo[1]+'_'+jeux[pseudo[1]].tour]);
         console.log(pseudo[0] + ' vient de rentrer dans le salon ' + pseudo[1]);
+
+        fs.appendFile('data/messages/' + pseudo[1] + '.txt', pseudo[0] + ' vient de rentrer dans le salon\\n', 'utf8',  (err) => {});
+
+
+
+        setTimeout(function(){
+            messagerie(socket, pseudo[1]);
+            var salon = pseudo[1];
+            for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
+                if(jeux[salon].listeSocket[i] != socket){
+                    jeux[salon].listeSocket[i].emit('nouveau_message', pseudo[0] + ' vient de rentrer dans le salon');
+                }
+            }
+        }, 1000);
     });
 
     // ON debut_jeu
@@ -182,6 +196,11 @@ io.sockets.on('connection', function (socket, pseudo) {
             }
          }
     });
+
+    socket.on('nouveau_message', function(data){
+        data.push(socket);
+        sendMessage(data);
+    });
 });
 
 var fileContentRooms = function(salon){
@@ -214,6 +233,45 @@ var inDico = function(mot){
         }
     }
     return false;
+};
+
+var messagerie = function(socket, salon){
+    var messages = '';
+
+    const listeMessage = readline.createInterface({
+        input: fs.createReadStream('data/messages/' + salon + '.txt')
+    });
+
+    // Each new line emits an event - every time the stream receives \r, \n, or \r\n
+    listeMessage.on('line', (line) => {
+        messages = messages + line;
+    });
+    listeMessage.on('close', () => {
+        socket.emit('messagerie', messages.split('\\n'));
+    });
+};
+
+var formatDate = function(date){
+    return withZero(date.getHours()) + ':' + withZero(date.getMinutes()) + ':' + withZero(date.getSeconds());
+};
+
+var withZero = function(nb){
+    return nb < 10 ? '0'+nb : nb;
+};
+
+var sendMessage = function(data){
+     var token = data[0];
+        var contenu = data[1];
+    var socket = data[2];
+        var message = '[' + formatDate(new Date()) + '] ' + token.split('_')[0] + ' : ' + contenu + '\\n';
+
+        fs.appendFile('data/messages/' + token.split('_')[1] + '.txt', message, 'utf8',  (err) => {});
+
+        var salon = token.split('_')[1];
+        for(var i = 0 ; i < jeux[salon].listeSocket.length ; i++){
+            jeux[salon].listeSocket[i].emit('nouveau_message', message.split('\\n')[0]);
+        }
+
 };
 
 server.listen(3535);

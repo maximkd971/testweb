@@ -1,4 +1,4 @@
-maxim;azerty
+maxim;maxim
 bastien;bastien
-florian;dorki001
+florian;florian
 prof;prof

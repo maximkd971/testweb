@@ -1,5 +1,4 @@
 const express = require('express');
-const port = process.env.PORT || 8080;
 const app = express(),
 	server = require('http').createServer(app),
     io = require('socket.io').listen(server),
@@ -8,7 +7,8 @@ app.use(express.static(__dirname + "/dist/"));
 app.get(/.*/, function(req, res){
     res.sendfile(__dirname + "/dist/index.html")
 });
-app.listen(8080);
+server.listen(3000);
+
 var listeSalons = [];
 
 var listeChaine = [];
@@ -63,10 +63,6 @@ char.on('line', (line) => {
 dico.on('line', (line) => {
     listeMot.push(line);
 });
-
-console.log('Serveur lancé !');
-
-
 
 io.sockets.on('connection', function (socket, pseudo) {
     // ON connexion
@@ -304,5 +300,5 @@ var sendMessage = function(data){
 
 };
 
-server.listen(3535);
+
 console.log('server started ...');

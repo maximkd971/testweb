@@ -62,7 +62,7 @@
 
 <script>
 import io from 'socket.io-client';
-var socket = io('https://responsible-borogovia.glitch.me:3535');
+var socket = io('https://responsible-borogovia.glitch.me:3000');
 export default {
   name: 'game',
   data: () => ({

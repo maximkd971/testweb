@@ -25,7 +25,7 @@ const router = new VueRouter({
 
 Vue.use(new VueSocketIO({
 	debug:true,
-	connection:'https://responsible-borogovia.glitch.me:3535'
+	connection:'https://responsible-borogovia.glitch.me:3000'
 }))
 
 new Vue({
